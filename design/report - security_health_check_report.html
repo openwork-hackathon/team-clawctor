@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Security Health Check Report - OpenClaw</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .scroll-section {
+            scroll-margin-top: 100px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-white transition-colors duration-200">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-[#dbe0e6] dark:border-[#2a343d] bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-4 lg:px-10 py-3">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z" fill="currentColor" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">OpenClaw AI Center</h2>
+<p class="text-xs text-[#617589] font-medium uppercase tracking-wider">Report OC-2023-X92</p>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<div class="hidden md:flex items-center gap-6 mr-6">
+<a class="text-[#111418] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-[#111418] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors" href="#">History</a>
+<a class="text-[#111418] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors" href="#">Settings</a>
+</div>
+<div class="flex gap-2">
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold tracking-[0.015em] hover:bg-primary/90 transition-all">
+<span class="material-symbols-outlined text-[18px] mr-2">picture_as_pdf</span>
+<span class="truncate">Export PDF</span>
+</button>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-[#f0f2f4] dark:bg-[#1e293b] text-[#111418] dark:text-white text-sm font-bold tracking-[0.015em] hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+<span class="material-symbols-outlined text-[18px] mr-2">code</span>
+<span class="truncate">JSON</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg bg-[#f0f2f4] dark:bg-[#1e293b] text-[#111418] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+<div class="h-10 w-[1px] bg-gray-200 dark:bg-gray-700 mx-2"></div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile avatar circle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDIX7XnrkfkGbGAGaSJ2fpAYO30mFeptKnPyz7wE0cA3sxUmRR97bTOsIqfZZ4paFnz5jZwqBX6XM4LPpt8pnPou2Jt9TEYGXfVSZfv1-gujqahFu-oOB3XeQvWwZBY1LX18Mb0sf8ZpDXB6lGHWQJrxZfRdnvnUGAJ7_thuFsjZfVFM4fYzBAJe2iBjOL6Mm_1aoIWsnm9BDbRHJJVkKEvG0ppaRw5pCANOzkFY1LxUE80hp0JvnUxbAlqs63QrHK2yiCjGJ6g66k");'></div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- Left Sidebar Navigation -->
+<aside class="hidden lg:flex w-72 flex-col border-r border-[#dbe0e6] dark:border-[#2a343d] bg-white dark:bg-background-dark p-6 sticky top-[65px] h-[calc(100vh-65px)] overflow-y-auto">
+<div class="flex flex-col gap-6">
+<div class="flex gap-3 items-center">
+<div class="bg-primary/10 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">security</span>
+</div>
+<div class="flex flex-col">
+<h3 class="text-[#111418] dark:text-white text-sm font-bold">Health Check #882</h3>
+<p class="text-[#617589] text-xs font-medium">v2.4.0 • Oct 24, 2023</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-bold text-sm transition-all group" href="#summary">
+<span class="material-symbols-outlined text-[20px]">description</span>
+                            Executive Summary
+                        </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617589] dark:text-gray-400 font-medium text-sm hover:bg-[#f0f2f4] dark:hover:bg-white/5 hover:text-[#111418] dark:hover:text-white transition-all" href="#scores">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+                            Scores &amp; Domains
+                        </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617589] dark:text-gray-400 font-medium text-sm hover:bg-[#f0f2f4] dark:hover:bg-white/5 hover:text-[#111418] dark:hover:text-white transition-all" href="#risks">
+<span class="material-symbols-outlined text-[20px]">bug_report</span>
+                            Risk List
+                        </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617589] dark:text-gray-400 font-medium text-sm hover:bg-[#f0f2f4] dark:hover:bg-white/5 hover:text-[#111418] dark:hover:text-white transition-all" href="#roadmap">
+<span class="material-symbols-outlined text-[20px]">route</span>
+                            Remediation Roadmap
+                        </a>
+</nav>
+<div class="mt-auto flex flex-col gap-1 border-t border-[#dbe0e6] dark:border-[#2a343d] pt-6">
+<a class="flex items-center gap-3 px-3 py-2 text-[#617589] dark:text-gray-400 text-sm font-medium hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+                            Support Center
+                        </a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#617589] dark:text-gray-400 text-sm font-medium hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+                            Documentation
+                        </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto px-6 lg:px-12 py-8 bg-background-light dark:bg-background-dark max-w-[1200px] mx-auto">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 mb-6">
+<span class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Reports</span>
+<span class="material-symbols-outlined text-[16px] text-[#617589]">chevron_right</span>
+<span class="text-primary text-xs font-semibold uppercase tracking-wider underline underline-offset-4">Security Health Check #882</span>
+</div>
+<!-- Page Header -->
+<div class="flex flex-wrap justify-between items-end gap-6 mb-10">
+<div class="flex flex-col gap-2">
+<h1 class="text-[#111418] dark:text-white text-4xl font-extrabold leading-tight tracking-tight">Security Health Check Report</h1>
+<p class="text-[#617589] dark:text-gray-400 text-base max-w-2xl font-medium">Detailed security posture assessment of OpenClaw system architecture, data handlers, and API endpoints.</p>
+</div>
+<button class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-white dark:bg-white/5 border border-[#dbe0e6] dark:border-[#2a343d] text-[#111418] dark:text-white text-sm font-bold shadow-sm hover:bg-gray-50 transition-all active:scale-95">
+<span class="material-symbols-outlined">refresh</span>
+                        Re-run Scan
+                    </button>
+</div>
+<!-- Summary Stats Widgets -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
+<div class="flex flex-col gap-2 rounded-xl bg-white dark:bg-[#1e293b] p-6 border border-[#dbe0e6] dark:border-white/5 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-[#617589] dark:text-gray-400 text-sm font-bold uppercase tracking-wider">Overall Score</p>
+<span class="material-symbols-outlined text-primary">verified_user</span>
+</div>
+<p class="text-[#111418] dark:text-white text-4xl font-black">82<span class="text-lg text-gray-400 font-medium">/100</span></p>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="text-[#078838] bg-[#078838]/10 px-1.5 py-0.5 rounded text-xs font-bold">+5%</span>
+<span class="text-[#617589] dark:text-gray-500 text-xs">from last month</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl bg-white dark:bg-[#1e293b] p-6 border border-[#dbe0e6] dark:border-white/5 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-[#617589] dark:text-gray-400 text-sm font-bold uppercase tracking-wider">Critical Risks</p>
+<span class="material-symbols-outlined text-red-500">warning</span>
+</div>
+<p class="text-[#111418] dark:text-white text-4xl font-black">3</p>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="text-gray-500 bg-gray-500/10 px-1.5 py-0.5 rounded text-xs font-bold">STABLE</span>
+<span class="text-[#617589] dark:text-gray-500 text-xs">No change</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl bg-white dark:bg-[#1e293b] p-6 border border-[#dbe0e6] dark:border-white/5 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-[#617589] dark:text-gray-400 text-sm font-bold uppercase tracking-wider">Open Issues</p>
+<span class="material-symbols-outlined text-orange-500">error</span>
+</div>
+<p class="text-[#111418] dark:text-white text-4xl font-black">12</p>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="text-[#e73908] bg-[#e73908]/10 px-1.5 py-0.5 rounded text-xs font-bold">-12%</span>
+<span class="text-[#617589] dark:text-gray-500 text-xs">Reduction vs avg</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl bg-white dark:bg-[#1e293b] p-6 border border-[#dbe0e6] dark:border-white/5 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-[#617589] dark:text-gray-400 text-sm font-bold uppercase tracking-wider">Total Assets</p>
+<span class="material-symbols-outlined text-purple-500">lan</span>
+</div>
+<p class="text-[#111418] dark:text-white text-4xl font-black">142</p>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="text-[#078838] bg-[#078838]/10 px-1.5 py-0.5 rounded text-xs font-bold">+2%</span>
+<span class="text-[#617589] dark:text-gray-500 text-xs">New containers</span>
+</div>
+</div>
+</div>
+<!-- Executive Summary Section -->
+<section class="scroll-section mb-12" id="summary">
+<div class="flex items-center gap-3 mb-6">
+<h2 class="text-2xl font-bold dark:text-white">Executive Summary</h2>
+<div class="h-[1px] flex-1 bg-[#dbe0e6] dark:bg-[#2a343d]"></div>
+</div>
+<div class="bg-white dark:bg-[#1e293b] rounded-xl p-8 border border-[#dbe0e6] dark:border-white/5 shadow-sm leading-relaxed text-gray-700 dark:text-gray-300">
+<p class="mb-4">The current security health of <strong>OpenClaw Center</strong> is rated as <span class="text-green-600 font-bold">Good</span>. While the overall score of 82/100 reflects a strong baseline posture, the presence of 3 Critical Risks in the Identity &amp; Access domain requires immediate remediation. Most high-severity findings relate to <strong>API key rotation policies</strong> and <strong>Cross-Origin Resource Sharing (CORS)</strong> configurations in the staging environment.</p>
+<p>We detected successful mitigation of previously reported SQL injection vulnerabilities. However, the system's external exposure has increased by 2% due to the deployment of new edge functions. It is recommended to prioritize the "Remediation Roadmap" section to reach an 90+ target score by Q4.</p>
+</div>
+</section>
+<!-- Visual Score & Gauge Section -->
+<section class="scroll-section mb-12" id="scores">
+<div class="flex items-center gap-3 mb-6">
+<h2 class="text-2xl font-bold dark:text-white">Scores &amp; Domain Breakdown</h2>
+<div class="h-[1px] flex-1 bg-[#dbe0e6] dark:bg-[#2a343d]"></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="bg-white dark:bg-[#1e293b] rounded-xl p-8 border border-[#dbe0e6] dark:border-white/5 shadow-sm flex flex-col items-center justify-center text-center">
+<h3 class="text-[#617589] text-sm font-bold uppercase mb-8">Security Gauge</h3>
+<div class="relative flex items-center justify-center size-52">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+<circle class="stroke-current text-gray-200 dark:text-gray-700" cx="18" cy="18" fill="none" r="16" stroke-width="2.5"></circle>
+<circle class="stroke-current text-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="82, 100" stroke-linecap="round" stroke-width="2.5"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="text-5xl font-black dark:text-white">82%</span>
+<span class="text-xs font-bold text-[#617589] uppercase tracking-widest">Health</span>
+</div>
+</div>
+<p class="mt-8 text-sm text-[#617589] font-medium italic">"Strong defensive posture with minor configuration gaps."</p>
+</div>
+<div class="bg-white dark:bg-[#1e293b] rounded-xl p-8 border border-[#dbe0e6] dark:border-white/5 shadow-sm flex flex-col gap-6">
+<h3 class="text-[#617589] text-sm font-bold uppercase">Category Health</h3>
+<div class="space-y-5">
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-bold dark:text-gray-200">Network Security</span>
+<span class="font-bold text-green-500">95%</span>
+</div>
+<div class="w-full h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-green-500 rounded-full" style="width: 95%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-bold dark:text-gray-200">Identity &amp; Access</span>
+<span class="font-bold text-red-500">42%</span>
+</div>
+<div class="w-full h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-red-500 rounded-full" style="width: 42%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-bold dark:text-gray-200">Data Encryption</span>
+<span class="font-bold text-primary">88%</span>
+</div>
+<div class="w-full h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 88%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-bold dark:text-gray-200">API Integrity</span>
+<span class="font-bold text-orange-500">65%</span>
+</div>
+<div class="w-full h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-orange-500 rounded-full" style="width: 65%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Detailed Risk List Table -->
+<section class="scroll-section mb-12" id="risks">
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+<div class="flex items-center gap-3">
+<h2 class="text-2xl font-bold dark:text-white">Identified Risk List</h2>
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-black uppercase">15 Total</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-lg border border-[#dbe0e6] dark:border-[#2a343d] bg-white dark:bg-white/5">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                                High Severity
+                            </button>
+<button class="flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-lg border border-[#dbe0e6] dark:border-[#2a343d] bg-white dark:bg-white/5">
+<span class="material-symbols-outlined text-[18px]">sort</span>
+                                Sort by CVSS
+                            </button>
+</div>
+</div>
+<div class="bg-white dark:bg-[#1e293b] rounded-xl border border-[#dbe0e6] dark:border-white/5 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-gray-50 dark:bg-[#161f29] border-b border-[#dbe0e6] dark:border-[#2a343d]">
+<th class="px-6 py-4 text-xs font-black text-[#617589] uppercase tracking-widest">Severity</th>
+<th class="px-6 py-4 text-xs font-black text-[#617589] uppercase tracking-widest">Risk Name</th>
+<th class="px-6 py-4 text-xs font-black text-[#617589] uppercase tracking-widest">Category</th>
+<th class="px-6 py-4 text-xs font-black text-[#617589] uppercase tracking-widest text-center">CVSS</th>
+<th class="px-6 py-4 text-xs font-black text-[#617589] uppercase tracking-widest text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#dbe0e6] dark:divide-[#2a343d]">
+<tr class="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-black uppercase bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">
+<span class="size-1.5 rounded-full bg-red-600 animate-pulse"></span> Critical
+                                            </span>
+</td>
+<td class="px-6 py-4 font-bold text-sm dark:text-gray-200">Unencrypted API Key in .env Storage</td>
+<td class="px-6 py-4 text-sm text-[#617589] font-medium">Identity &amp; Access</td>
+<td class="px-6 py-4 text-sm font-black text-center text-red-600">9.8</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline text-sm font-bold">Details</button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-black uppercase bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">
+<span class="size-1.5 rounded-full bg-red-600 animate-pulse"></span> Critical
+                                            </span>
+</td>
+<td class="px-6 py-4 font-bold text-sm dark:text-gray-200">Public S3 Bucket Policy (Staging)</td>
+<td class="px-6 py-4 text-sm text-[#617589] font-medium">Data Storage</td>
+<td class="px-6 py-4 text-sm font-black text-center text-red-600">9.1</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline text-sm font-bold">Details</button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-black uppercase bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
+<span class="size-1.5 rounded-full bg-orange-600"></span> High
+                                            </span>
+</td>
+<td class="px-6 py-4 font-bold text-sm dark:text-gray-200">Insecure CORS Configuration</td>
+<td class="px-6 py-4 text-sm text-[#617589] font-medium">Networking</td>
+<td class="px-6 py-4 text-sm font-black text-center text-orange-600">7.5</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline text-sm font-bold">Details</button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-black uppercase bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
+<span class="size-1.5 rounded-full bg-orange-600"></span> High
+                                            </span>
+</td>
+<td class="px-6 py-4 font-bold text-sm dark:text-gray-200">Weak JWT Token Verification</td>
+<td class="px-6 py-4 text-sm text-[#617589] font-medium">Authentication</td>
+<td class="px-6 py-4 text-sm font-black text-center text-orange-600">7.2</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:underline text-sm font-bold">Details</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Detailed Finding Highlight -->
+<section class="mb-12">
+<div class="bg-white dark:bg-[#1e293b] rounded-xl border-l-4 border-red-500 shadow-md p-8">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-xl font-bold dark:text-white flex items-center gap-2">
+                                    Finding: Unencrypted API Key in .env Storage
+                                    <span class="material-symbols-outlined text-red-500">lock_open</span>
+</h3>
+<p class="text-[#617589] text-sm mt-1">Identified on Oct 24, 2023 at 14:22:11 UTC</p>
+</div>
+<span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-bold text-gray-500">ID: OC-FIND-001</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+<div>
+<h4 class="text-xs font-black uppercase text-[#617589] mb-3 tracking-widest">Evidence Found</h4>
+<div class="bg-gray-900 text-gray-300 p-4 rounded-lg font-mono text-xs overflow-x-auto border border-white/10 shadow-inner">
+<div class="flex gap-4">
+<span class="text-gray-600 select-none">12</span>
+<span># Development Environment Config</span>
+</div>
+<div class="flex gap-4">
+<span class="text-gray-600 select-none">13</span>
+<span class="text-red-400">STRIPE_SECRET_KEY="sk_test_51Mz..."</span>
+</div>
+<div class="flex gap-4">
+<span class="text-gray-600 select-none">14</span>
+<span>AWS_REGION="us-east-1"</span>
+</div>
+</div>
+<p class="text-xs text-[#617589] mt-3">File Path: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">/src/backend/config/.env.stg</code></p>
+</div>
+<div>
+<h4 class="text-xs font-black uppercase text-[#617589] mb-3 tracking-widest">Remediation Suggestion</h4>
+<div class="space-y-3">
+<div class="flex gap-3">
+<span class="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-white text-[10px] font-bold">1</span>
+<p class="text-sm dark:text-gray-300">Migrate sensitive keys to AWS Secrets Manager or HashiCorp Vault.</p>
+</div>
+<div class="flex gap-3">
+<span class="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-white text-[10px] font-bold">2</span>
+<p class="text-sm dark:text-gray-300">Rotate the compromised key immediately across all environments.</p>
+</div>
+<div class="flex gap-3">
+<span class="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-white text-[10px] font-bold">3</span>
+<p class="text-sm dark:text-gray-300">Add <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">.env*</code> to <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">.gitignore</code> to prevent future leaks.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Remediation Roadmap -->
+<section class="scroll-section mb-20" id="roadmap">
+<div class="flex items-center gap-3 mb-6">
+<h2 class="text-2xl font-bold dark:text-white">Remediation Roadmap</h2>
+<div class="h-[1px] flex-1 bg-[#dbe0e6] dark:bg-[#2a343d]"></div>
+</div>
+<div class="relative pl-8 space-y-8 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-[#dbe0e6] dark:before:bg-[#2a343d]">
+<!-- Step 1 -->
+<div class="relative">
+<div class="absolute -left-[28px] top-1 size-5 rounded-full bg-primary border-4 border-white dark:border-background-dark shadow-sm"></div>
+<div class="bg-white dark:bg-[#1e293b] rounded-xl p-5 border border-[#dbe0e6] dark:border-white/5 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-black text-primary uppercase tracking-wider">Phase 1: Immediate Critical Path</span>
+<span class="text-xs font-bold text-red-500">Urgent</span>
+</div>
+<h4 class="font-bold dark:text-gray-200">Credential Sanitization</h4>
+<p class="text-sm text-[#617589] mt-2 font-medium">Rotate all exposed API keys and migrate to a dedicated Secrets Management service. Expected Score Boost: <strong>+12%</strong></p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative">
+<div class="absolute -left-[28px] top-1 size-5 rounded-full bg-gray-300 dark:bg-gray-600 border-4 border-white dark:border-background-dark shadow-sm"></div>
+<div class="bg-white/60 dark:bg-[#1e293b]/60 rounded-xl p-5 border border-[#dbe0e6] dark:border-white/5 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-black text-[#617589] uppercase tracking-wider">Phase 2: Configuration Hardening</span>
+<span class="text-xs font-bold text-[#617589]">Week 2</span>
+</div>
+<h4 class="font-bold dark:text-gray-200">Edge Gateway Lockdown</h4>
+<p class="text-sm text-[#617589] mt-2 font-medium">Reconfigure CORS headers and update CSP policies for all production endpoints. Expected Score Boost: <strong>+4%</strong></p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative">
+<div class="absolute -left-[28px] top-1 size-5 rounded-full bg-gray-300 dark:bg-gray-600 border-4 border-white dark:border-background-dark shadow-sm"></div>
+<div class="bg-white/60 dark:bg-[#1e293b]/60 rounded-xl p-5 border border-[#dbe0e6] dark:border-white/5 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-black text-[#617589] uppercase tracking-wider">Phase 3: Long-term Compliance</span>
+<span class="text-xs font-bold text-[#617589]">Month 1</span>
+</div>
+<h4 class="font-bold dark:text-gray-200">Automated Dependency Audits</h4>
+<p class="text-sm text-[#617589] mt-2 font-medium">Implement Snyk or GitHub Advanced Security in CI/CD pipeline. Expected Score Boost: <strong>+2%</strong></p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="border-t border-[#dbe0e6] dark:border-[#2a343d] pt-8 pb-12 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-4 text-[#617589]">
+<div class="size-6 opacity-50">
+<svg fill="currentColor" viewbox="0 0 48 48">
+<path d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z"></path>
+</svg>
+</div>
+<p class="text-sm font-medium">© 2023 OpenClaw Security. All rights reserved.</p>
+</div>
+<div class="flex gap-6">
+<a class="text-sm font-bold text-[#617589] hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-sm font-bold text-[#617589] hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-sm font-bold text-[#617589] hover:text-primary transition-colors" href="#">Audit Methodology</a>
+</div>
+</footer>
+</main>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,27 @@
+{
+  "name": "team-clawctor",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "bun run --cwd packages/api dev",
+    "dev:web": "bun run --cwd packages/web dev",
+    "build:web": "bun run --cwd packages/web build",
+    "prisma:generate": "bun run --cwd packages/db prisma:generate",
+    "prisma:migrate": "bun run --cwd packages/db prisma:migrate",
+    "format": "bunx prettier -w ."
+  },
+  "overrides": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

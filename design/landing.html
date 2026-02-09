@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OpenClaw AI Health Check Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-gray-100 transition-colors duration-200">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-[#f0f2f4] dark:border-gray-800">
+<div class="max-w-[1200px] mx-auto flex items-center justify-between px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">shield</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight">OpenClaw <span class="text-primary">AI</span></h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#features">Features</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#how-it-works">How it Works</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#pricing">Pricing</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Docs</a>
+</nav>
+<div class="flex items-center gap-3">
+<button class="hidden sm:block px-4 py-2 text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all">Login</button>
+<button class="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-primary/20 transition-all">
+                    Start Free Trial
+                </button>
+</div>
+</div>
+</header>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="max-w-[1200px] mx-auto px-6 py-16 md:py-24">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="flex flex-col gap-8">
+<div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider w-fit">
+<span class="material-symbols-outlined text-sm">verified</span>
+                        Powered by OpenClaw Engine
+                    </div>
+<h1 class="text-5xl md:text-6xl font-black leading-tight tracking-[-0.033em]">
+                        AI-Driven Security Auditing for the <span class="text-primary">OpenClaw</span> Ecosystem
+                    </h1>
+<p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-[540px]">
+                        Automate your system health checkups and security audits with our advanced AI engine, designed specifically for seamless OpenClaw infrastructure integration.
+                    </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl text-base font-bold shadow-xl shadow-primary/25 transition-all">
+                            Start Your Free Audit
+                        </button>
+<button class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-8 py-4 rounded-xl text-base font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                            Book a Demo
+                        </button>
+</div>
+<div class="flex items-center gap-4 text-sm text-gray-500">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center text-[10px] font-bold">JD</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-blue-200 flex items-center justify-center text-[10px] font-bold">AS</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-green-200 flex items-center justify-center text-[10px] font-bold">MK</div>
+</div>
+                        Trusted by 500+ Engineering Teams
+                    </div>
+</div>
+<div class="relative">
+<div class="absolute -inset-4 bg-primary/5 rounded-3xl blur-2xl"></div>
+<div class="relative bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-700">
+<div class="rounded-2xl overflow-hidden aspect-video bg-gray-100 dark:bg-gray-900 flex items-center justify-center relative group" data-alt="Abstract AI security dashboard interface preview" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDMOhGtKOZD8L8ix4pHgM7cAGyPCjD6EVMhsNhm-lzTCB11kuLP_-1tgE48sShLhKrnKYXwHuqoK3KtL829_O4cIbPelA-0HgVpD6prOvp-4UeO0QokSXne5EC2c7nEDKU0lyZIutEP2jQ4LbMi1jaAOqfuHRZeMbIfX8-ldXu_nFT9r3Dh-J8rEspIgC-AgatBSoNSXnWu1s1m1BGodjB4JoBF2efkylVbF_b_45JKbCxLyfakLk4HgoCpy87HrMi7IP6sE31tAUI");'>
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent"></div>
+<span class="material-symbols-outlined text-6xl text-primary/40 group-hover:scale-110 transition-transform">analytics</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="bg-white dark:bg-gray-900/50 py-24 border-y border-[#f0f2f4] dark:border-gray-800" id="features">
+<div class="max-w-[1200px] mx-auto px-6">
+<div class="text-center mb-16 space-y-4">
+<h2 class="text-3xl md:text-4xl font-bold tracking-tight">Enterprise-Grade Security Features</h2>
+<p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                        Everything you need to ensure your AI systems remain secure, compliant, and optimized for maximum uptime.
+                    </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="p-8 rounded-2xl bg-background-light dark:bg-background-dark border border-gray-100 dark:border-gray-800 hover:border-primary/30 transition-all group">
+<div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">quiz</span>
+</div>
+<h3 class="text-xl font-bold mb-3">Automated Questionnaires</h3>
+<p class="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">
+                            Intelligent data gathering that adapts to your system architecture automatically. No more manual security forms.
+                        </p>
+</div>
+<!-- Feature 2 -->
+<div class="p-8 rounded-2xl bg-background-light dark:bg-background-dark border border-gray-100 dark:border-gray-800 hover:border-primary/30 transition-all group">
+<div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">assignment_turned_in</span>
+</div>
+<h3 class="text-xl font-bold mb-3">AI-Generated Reports</h3>
+<p class="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">
+                            Receive instant, actionable security insights and compliance documentation generated by our proprietary AI auditor.
+                        </p>
+</div>
+<!-- Feature 3 -->
+<div class="p-8 rounded-2xl bg-background-light dark:bg-background-dark border border-gray-100 dark:border-gray-800 hover:border-primary/30 transition-all group">
+<div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">currency_bitcoin</span>
+</div>
+<h3 class="text-xl font-bold mb-3">Token-based Payments</h3>
+<p class="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">
+                            Frictionless billing and resource allocation through native OpenClaw token integration. Pay only for what you audit.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Visual Report Preview -->
+<section class="py-24 max-w-[1200px] mx-auto px-6">
+<div class="bg-primary/5 rounded-[2rem] p-8 md:p-16 overflow-hidden">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="order-2 lg:order-1">
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 space-y-6">
+<div class="flex items-center justify-between border-b pb-4 dark:border-gray-700">
+<div>
+<p class="text-[10px] uppercase font-bold text-gray-400">Security Audit Report</p>
+<h4 class="font-bold">Project_Phoenix_Final</h4>
+</div>
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-3 py-1 rounded-full text-xs font-bold">Secure</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+<p class="text-xs text-gray-500">Compliance Score</p>
+<p class="text-2xl font-black text-primary">98%</p>
+</div>
+<div class="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+<p class="text-xs text-gray-500">Vulnerabilities</p>
+<p class="text-2xl font-black text-red-500">02</p>
+</div>
+</div>
+<div class="space-y-3">
+<div class="h-2 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[90%]"></div>
+</div>
+<div class="flex justify-between text-xs font-semibold">
+<span>Database Integrity</span>
+<span>Excellent</span>
+</div>
+</div>
+</div>
+</div>
+<div class="order-1 lg:order-2 space-y-6">
+<h2 class="text-4xl font-bold leading-tight">Insightful reports at your fingertips</h2>
+<p class="text-gray-600 dark:text-gray-400">Our AI scans over 2,000 security vectors in seconds, providing a comprehensive overview of your system health that's easy to read and act upon.</p>
+<ul class="space-y-4">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+<span class="font-semibold">SOC2 &amp; ISO 27001 Readiness</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+<span class="font-semibold">Real-time Threat Monitoring</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+<span class="font-semibold">Automated Mitigation Steps</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works Section -->
+<section class="py-24 bg-background-light dark:bg-background-dark" id="how-it-works">
+<div class="max-w-[1200px] mx-auto px-6">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-bold">Simple 3-Step Process</h2>
+</div>
+<div class="relative">
+<!-- Connector line -->
+<div class="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-800 -translate-y-1/2"></div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
+<div class="flex flex-col items-center text-center group">
+<div class="w-16 h-16 bg-white dark:bg-gray-800 border-2 border-primary rounded-full flex items-center justify-center text-primary font-black text-xl mb-6 shadow-xl group-hover:scale-110 transition-transform">1</div>
+<h3 class="text-xl font-bold mb-2">Integrate OpenClaw</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400">Connect your ecosystem via our secure API in just two clicks.</p>
+</div>
+<div class="flex flex-col items-center text-center group">
+<div class="w-16 h-16 bg-white dark:bg-gray-800 border-2 border-primary rounded-full flex items-center justify-center text-primary font-black text-xl mb-6 shadow-xl group-hover:scale-110 transition-transform">2</div>
+<h3 class="text-xl font-bold mb-2">Submit System Data</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400">Run the automated scanner or fill out intelligent questionnaires.</p>
+</div>
+<div class="flex flex-col items-center text-center group">
+<div class="w-16 h-16 bg-white dark:bg-gray-800 border-2 border-primary rounded-full flex items-center justify-center text-primary font-black text-xl mb-6 shadow-xl group-hover:scale-110 transition-transform">3</div>
+<h3 class="text-xl font-bold mb-2">Get AI Report</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400">Download your comprehensive health report and security roadmap.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-24">
+<div class="max-w-[1200px] mx-auto px-6">
+<div class="bg-primary rounded-[2.5rem] p-12 md:p-20 text-center text-white relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[300px] -rotate-12 absolute -top-20 -left-20">shield</span>
+<span class="material-symbols-outlined text-[200px] rotate-12 absolute -bottom-20 -right-20">security</span>
+</div>
+<div class="relative z-10">
+<h2 class="text-4xl md:text-5xl font-black mb-6">Ready to secure your AI future?</h2>
+<p class="text-primary/10 text-xl mb-10 text-white/80 max-w-xl mx-auto">
+                            Join hundreds of enterprises using OpenClaw AI to protect their critical infrastructure.
+                        </p>
+<div class="flex flex-wrap justify-center gap-4">
+<button class="bg-white text-primary hover:bg-gray-100 px-10 py-4 rounded-xl text-lg font-bold transition-all">
+                                Get Started Free
+                            </button>
+<button class="bg-primary/20 hover:bg-primary/30 text-white border border-white/30 px-10 py-4 rounded-xl text-lg font-bold transition-all">
+                                Contact Sales
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-background-dark border-t border-[#f0f2f4] dark:border-gray-800 py-16">
+<div class="max-w-[1200px] mx-auto px-6">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12">
+<div class="col-span-2">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary text-2xl">shield</span>
+<h2 class="text-lg font-bold">OpenClaw <span class="text-primary">AI</span></h2>
+</div>
+<p class="text-gray-500 text-sm leading-relaxed max-w-xs mb-6">
+                        The next generation of AI system auditing and health checkups for the decentralised world.
+                    </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-xl">share</span>
+</a>
+<a class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-xl">language</span>
+</a>
+</div>
+</div>
+<div>
+<h4 class="font-bold mb-6">Product</h4>
+<ul class="space-y-4 text-sm text-gray-500 dark:text-gray-400">
+<li><a class="hover:text-primary" href="#">Features</a></li>
+<li><a class="hover:text-primary" href="#">Integrations</a></li>
+<li><a class="hover:text-primary" href="#">Pricing</a></li>
+<li><a class="hover:text-primary" href="#">Changelog</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Company</h4>
+<ul class="space-y-4 text-sm text-gray-500 dark:text-gray-400">
+<li><a class="hover:text-primary" href="#">About Us</a></li>
+<li><a class="hover:text-primary" href="#">Careers</a></li>
+<li><a class="hover:text-primary" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Support</h4>
+<ul class="space-y-4 text-sm text-gray-500 dark:text-gray-400">
+<li><a class="hover:text-primary" href="#">Documentation</a></li>
+<li><a class="hover:text-primary" href="#">API Reference</a></li>
+<li><a class="hover:text-primary" href="#">Community</a></li>
+<li><a class="hover:text-primary" href="#">Help Center</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-[#f0f2f4] dark:border-gray-800 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-sm text-gray-500">© 2024 OpenClaw AI. All rights reserved.</p>
+<div class="flex items-center gap-6">
+<span class="flex items-center gap-2 text-xs font-bold text-green-500">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        All Systems Operational
+                    </span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

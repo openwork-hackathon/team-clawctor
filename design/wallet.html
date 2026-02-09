@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wallet &amp; Token Management | OpenClaw</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-gray-100 min-h-screen">
+<div class="flex flex-col min-h-screen">
+<!-- Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#dbe0e6] dark:border-gray-800 bg-white dark:bg-background-dark px-6 py-3 lg:px-10">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">health_and_safety</span>
+</div>
+<h2 class="text-[#111418] dark:text-white text-lg font-extrabold leading-tight tracking-tight">OpenClaw</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-gray-600 dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-gray-600 dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors" href="#">Security Audits</a>
+<a class="text-gray-600 dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors" href="#">Questionnaires</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="#">Wallet</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<div class="hidden sm:flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-1.5 gap-2 border border-transparent focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-gray-500 text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-40 lg:w-64 placeholder:text-gray-500" placeholder="Search orders..." type="text"/>
+</div>
+<button class="flex items-center gap-2 bg-primary text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors shadow-sm shadow-primary/20">
+<span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+<span class="truncate">Connect Wallet</span>
+</button>
+<div class="h-9 w-9 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden border border-gray-300 dark:border-gray-600">
+<img alt="User Profile" data-alt="Avatar of a male user with glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDarhvldnKKBzmQZ-zQKCjefdrLD671CIUf5qLMjYylkLWMM92jQNk5Ln2i667H6GZN1lumgv7r1pJZJJzGt9UTmmfWHLF7xUXRkTvcnsyidoeC36z6PdrlCV6oEA3QnssSK9gQzYOLe2BRonGAdU77HPuEcmkqc6EUyMCc01zdow5F4CgfiOYjxNQ7UjPuG_vytesVH_PV6CO33g7qNGDuend608I6PajmTbd4pV1g6tEDAm_2oy0Tg9w6pgTOTKQkwo9YhrWvpY"/>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full max-w-[1200px] mx-auto px-4 py-8 lg:px-10">
+<!-- Header Section -->
+<div class="flex flex-wrap justify-between items-end gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<h1 class="text-[#111418] dark:text-white text-3xl font-extrabold tracking-tight">Wallet &amp; Tokens</h1>
+<p class="text-gray-500 dark:text-gray-400 text-sm">Manage your platform credits and view detailed transaction history.</p>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
+<span class="material-symbols-outlined text-lg">refresh</span>
+<span>Refresh Balance</span>
+</button>
+</div>
+<!-- Balance Hero Card -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+<div class="lg:col-span-2 relative overflow-hidden bg-primary rounded-xl p-8 text-white flex flex-col justify-between shadow-xl shadow-primary/10">
+<div class="absolute top-[-20%] right-[-10%] w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+<div class="relative z-10">
+<p class="text-blue-100 text-sm font-medium uppercase tracking-wider mb-2">Available Balance</p>
+<div class="flex items-baseline gap-3">
+<span class="text-5xl font-extrabold tracking-tight">1,250</span>
+<span class="text-xl font-semibold text-blue-100">Tokens</span>
+</div>
+</div>
+<div class="relative z-10 mt-8 flex items-center gap-4">
+<div class="flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full text-xs font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+15% this month</span>
+</div>
+<p class="text-blue-50 text-xs">Approximately 25 security checkups remaining</p>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 flex flex-col justify-between shadow-sm">
+<div>
+<h3 class="font-bold text-gray-900 dark:text-white mb-1">Quick Top-up</h3>
+<p class="text-sm text-gray-500 mb-4">Add tokens to your account instantly.</p>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-600 hover:border-primary transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">token</span>
+<span class="text-sm font-bold">100 Tokens</span>
+</div>
+<span class="text-sm font-extrabold text-primary group-hover:underline">$10</span>
+</div>
+<button class="w-full bg-primary/10 text-primary font-bold py-2.5 rounded-lg hover:bg-primary hover:text-white transition-all">
+                            Custom Amount
+                        </button>
+</div>
+</div>
+</div>
+<!-- Top-up Packages Grid -->
+<section class="mb-12">
+<div class="flex items-center gap-2 mb-6">
+<h2 class="text-xl font-extrabold text-gray-900 dark:text-white">Select a Package</h2>
+<div class="h-px flex-1 bg-gray-200 dark:bg-gray-800"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Starter -->
+<div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 flex flex-col shadow-sm hover:shadow-md transition-all border-b-4 border-b-gray-300">
+<div class="mb-6">
+<h4 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Starter</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-extrabold">$10</span>
+<span class="text-gray-400 text-sm">/ 100 tokens</span>
+</div>
+</div>
+<ul class="space-y-4 mb-8 flex-1">
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<span>Instant token credit</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<span>Standard support</span>
+</li>
+</ul>
+<button class="w-full py-3 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white font-bold rounded-lg hover:bg-primary hover:text-white transition-colors">Buy Starter</button>
+</div>
+<!-- Pro (Featured) -->
+<div class="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-primary flex flex-col shadow-xl shadow-primary/5 relative transform scale-105 z-10">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-white text-[10px] font-black uppercase tracking-tighter px-3 py-1 rounded-full">Most Popular</div>
+<div class="mb-6">
+<h4 class="text-sm font-bold text-primary uppercase tracking-widest mb-1">Professional</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-extrabold">$45</span>
+<span class="text-gray-400 text-sm">/ 500 tokens</span>
+</div>
+</div>
+<ul class="space-y-4 mb-8 flex-1">
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<span>Priority audit processing</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<span>Email support priority</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300 font-bold">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<span>10 Bonus tokens included</span>
+</li>
+</ul>
+<button class="w-full py-3 bg-primary text-white font-bold rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-primary/20">Buy Pro</button>
+</div>
+<!-- Enterprise -->
+<div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 flex flex-col shadow-sm hover:shadow-md transition-all border-b-4 border-b-gray-300">
+<div class="mb-6">
+<h4 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Enterprise</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-extrabold">$80</span>
+<span class="text-gray-400 text-sm">/ 1000 tokens</span>
+</div>
+</div>
+<ul class="space-y-4 mb-8 flex-1">
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<span>Full API access enabled</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<span>Dedicated account manager</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300 font-bold">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<span>50 Bonus tokens included</span>
+</li>
+</ul>
+<button class="w-full py-3 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white font-bold rounded-lg hover:bg-primary hover:text-white transition-colors">Buy Enterprise</button>
+</div>
+</div>
+</section>
+<!-- Transactions & Orders -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+<!-- Recent Transactions (Token Usage) -->
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-extrabold text-gray-900 dark:text-white">Token Activity</h3>
+<a class="text-primary text-xs font-bold hover:underline" href="#">View All</a>
+</div>
+<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
+<th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Description</th>
+<th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-right">Change</th>
+<th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-right">Date</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-gray-900 dark:text-white">Security Audit: CloudInfra_v2</span>
+<span class="text-[11px] text-gray-400">Health Check #8892</span>
+</div>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="text-sm font-bold text-red-500">- 50</span>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="text-xs text-gray-500">Oct 24, 2023</span>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-gray-900 dark:text-white">Token Top-up: Professional</span>
+<span class="text-[11px] text-gray-400">Transaction ID: TX_9901</span>
+</div>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="text-sm font-bold text-green-500">+ 510</span>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="text-xs text-gray-500">Oct 22, 2023</span>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-gray-900 dark:text-white">API Questionnaire Generation</span>
+<span class="text-[11px] text-gray-400">Internal Review Tool</span>
+</div>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="text-sm font-bold text-red-500">- 15</span>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="text-xs text-gray-500">Oct 21, 2023</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Recent Orders (Fiat Payments) -->
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-extrabold text-gray-900 dark:text-white">Recent Orders</h3>
+<a class="text-primary text-xs font-bold hover:underline" href="#">Download Invoices</a>
+</div>
+<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
+<th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Order ID</th>
+<th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
+<th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-right">Amount</th>
+<th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-center">Invoice</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+<td class="px-4 py-4">
+<span class="text-sm font-bold text-gray-900 dark:text-white">#OC-98442</span>
+</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Success</span>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="text-sm font-extrabold">$45.00</span>
+</td>
+<td class="px-4 py-4 text-center">
+<button class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors text-gray-500">
+<span class="material-symbols-outlined text-lg">download</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+<td class="px-4 py-4">
+<span class="text-sm font-bold text-gray-900 dark:text-white">#OC-98310</span>
+</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">Pending</span>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="text-sm font-extrabold">$10.00</span>
+</td>
+<td class="px-4 py-4 text-center">
+<button class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors text-gray-500">
+<span class="material-symbols-outlined text-lg">hourglass_empty</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+<td class="px-4 py-4">
+<span class="text-sm font-bold text-gray-900 dark:text-white">#OC-97992</span>
+</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Success</span>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="text-sm font-extrabold">$80.00</span>
+</td>
+<td class="px-4 py-4 text-center">
+<button class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors text-gray-500">
+<span class="material-symbols-outlined text-lg">download</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-auto border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-background-dark py-8 px-6 lg:px-10">
+<div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex flex-col gap-1">
+<p class="text-sm text-gray-500 dark:text-gray-400">© 2023 OpenClaw AI Health Check Center. All rights reserved.</p>
+<p class="text-[11px] text-gray-400">Security for the autonomous future.</p>
+</div>
+<div class="flex gap-8">
+<a class="text-xs font-bold text-gray-500 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-xs font-bold text-gray-500 hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-xs font-bold text-gray-500 hover:text-primary transition-colors" href="#">API Documentation</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

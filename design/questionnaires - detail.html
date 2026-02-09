@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Submitted Questionnaire Viewer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body { font-family: 'Manrope', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .sidebar-nav-active { @apply bg-primary/10 text-primary border-r-2 border-primary; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-white antialiased">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-64 border-r border-[#dbe0e6] dark:border-gray-700 bg-white dark:bg-[#16222d] flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">health_and_safety</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-base font-bold leading-tight">AI Health Check</h1>
+<p class="text-[#617589] text-xs font-normal">OpenClaw Admin</p>
+</div>
+</div>
+<div class="px-6 py-2">
+<h2 class="text-[10px] font-bold text-[#617589] uppercase tracking-wider mb-2">Sections</h2>
+</div>
+<nav class="flex-1 px-4 space-y-1 overflow-y-auto no-scrollbar">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-bold" href="#network-security">
+<span class="material-symbols-outlined text-lg">router</span>
+<span class="text-sm">Network Security</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#617589] hover:bg-gray-100 dark:hover:bg-gray-800" href="#data-privacy">
+<span class="material-symbols-outlined text-lg">lock</span>
+<span class="text-sm font-medium">Data Privacy</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#617589] hover:bg-gray-100 dark:hover:bg-gray-800" href="#access-control">
+<span class="material-symbols-outlined text-lg">key</span>
+<span class="text-sm font-medium">Access Control</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#617589] hover:bg-gray-100 dark:hover:bg-gray-800" href="#incident-response">
+<span class="material-symbols-outlined text-lg">emergency</span>
+<span class="text-sm font-medium">Incident Response</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#617589] hover:bg-gray-100 dark:hover:bg-gray-800" href="#asset-management">
+<span class="material-symbols-outlined text-lg">inventory_2</span>
+<span class="text-sm font-medium">Asset Management</span>
+</a>
+</nav>
+<div class="p-4 border-t border-[#dbe0e6] dark:border-gray-700">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuADPUK3zUqqJ1FK6XAewliK8h8kezFJQocop2QzMBaR3NopTC4j_8fsgOzngCDJlFJom3nqeakykg9ciedOV6JtsurTp_p1c_YesJcgNolYZuYKZgWwZFfXOwPtP10-AX4xEf1oM-WnJsUWAdyI4W37bfQuxAb0W3OuORVaBXUNR-MYhAYsrG2zpvuoEC3zT1n1Y-alu63pFVv-5o0Yu7nvUC6ff4xcUSAXVh7Ens8J-i77wIfJ_HfG6VOQXXEVJAfsBazvNLL_YNs')"></div>
+<div class="flex flex-col">
+<p class="text-xs font-bold leading-none text-[#111418] dark:text-white">Sarah Jenkins</p>
+<p class="text-[10px] text-[#617589]">Lead Auditor</p>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col overflow-hidden">
+<header class="h-16 border-b border-[#dbe0e6] dark:border-gray-700 bg-white dark:bg-[#16222d] px-8 flex items-center justify-between shrink-0">
+<div class="flex items-center gap-4">
+<div class="flex items-center text-[#617589] text-sm font-medium">
+<span>Audit Registry</span>
+<span class="material-symbols-outlined text-sm mx-1">chevron_right</span>
+<span class="text-[#111418] dark:text-white font-bold">Questionnaire #8821</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-[#dbe0e6] dark:border-gray-700 text-[#111418] dark:text-white text-sm font-bold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
+<span class="material-symbols-outlined text-base">download</span>
+<span>Download Original JSON</span>
+</button>
+<button class="flex items-center gap-2 px-6 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-blue-600 shadow-sm">
+<span class="material-symbols-outlined text-base">play_circle</span>
+<span>Start Evaluation</span>
+</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-8">
+<div class="max-w-6xl mx-auto space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="bg-white dark:bg-[#16222d] p-4 rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm">
+<p class="text-[10px] font-bold text-[#617589] uppercase tracking-wider mb-1">Company</p>
+<p class="text-sm font-bold">Stellar Dynamics Inc.</p>
+<p class="text-xs text-[#617589]">Org ID: 992-XD</p>
+</div>
+<div class="bg-white dark:bg-[#16222d] p-4 rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm">
+<p class="text-[10px] font-bold text-[#617589] uppercase tracking-wider mb-1">Asset Hash</p>
+<div class="flex items-center gap-2">
+<code class="text-xs font-mono bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded truncate max-w-[120px]">7f8e...3a1c</code>
+<button class="material-symbols-outlined text-sm text-[#617589] hover:text-primary">content_copy</button>
+</div>
+</div>
+<div class="bg-white dark:bg-[#16222d] p-4 rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm">
+<p class="text-[10px] font-bold text-[#617589] uppercase tracking-wider mb-1">Source</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">language</span>
+<span class="text-sm font-bold">Public Web Portal</span>
+</div>
+</div>
+<div class="bg-white dark:bg-[#16222d] p-4 rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm">
+<p class="text-[10px] font-bold text-[#617589] uppercase tracking-wider mb-1">Submitted At</p>
+<p class="text-sm font-bold">Oct 26, 2023 · 14:22</p>
+<p class="text-xs text-green-600 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">check_circle</span> Verified Session</p>
+</div>
+</div>
+<div class="space-y-8 pb-12">
+<section class="scroll-mt-6" id="network-security">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">router</span>
+<h2 class="font-bold text-lg">Network Security</h2>
+</div>
+<div class="bg-white dark:bg-[#16222d] rounded-xl border border-[#dbe0e6] dark:border-gray-700 overflow-hidden shadow-sm divide-y divide-[#dbe0e6] dark:divide-gray-700">
+<div class="p-6">
+<div class="flex justify-between items-start gap-4">
+<div class="space-y-2 flex-1">
+<h4 class="text-xs font-bold text-[#617589] uppercase">Q1.1</h4>
+<p class="text-sm font-semibold leading-relaxed">Does your organization utilize a Web Application Firewall (WAF) for all public-facing assets?</p>
+<div class="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-[#dbe0e6] dark:border-gray-700">
+<p class="text-sm text-[#111418] dark:text-white">Yes, we use Cloudflare Enterprise across all 15 public subdomains with automated rule-set updates enabled.</p>
+</div>
+</div>
+<div class="shrink-0 flex flex-col items-end gap-2">
+<span class="px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-[10px] font-bold rounded uppercase">Answered</span>
+<div class="flex gap-2">
+<button class="p-2 bg-blue-50 dark:bg-blue-900/20 text-primary rounded-lg hover:bg-blue-100 transition-colors" title="View Evidence">
+<span class="material-symbols-outlined text-lg">attachment</span>
+</button>
+<button class="p-2 bg-gray-50 dark:bg-gray-800 text-[#617589] rounded-lg hover:bg-gray-100 transition-colors" title="Flag for Review">
+<span class="material-symbols-outlined text-lg">flag</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start gap-4">
+<div class="space-y-2 flex-1">
+<h4 class="text-xs font-bold text-[#617589] uppercase">Q1.2</h4>
+<p class="text-sm font-semibold leading-relaxed">What is your current policy on SSH access to production environments?</p>
+<div class="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-[#dbe0e6] dark:border-gray-700">
+<p class="text-sm text-[#111418] dark:text-white">Direct SSH is disabled. Access is gated via a Just-In-Time (JIT) bastion host using hardware security keys (FIDO2).</p>
+</div>
+</div>
+<div class="shrink-0 flex flex-col items-end gap-2">
+<span class="px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-[10px] font-bold rounded uppercase">Answered</span>
+<div class="flex gap-2">
+<button class="p-2 bg-gray-50 dark:bg-gray-800 text-[#617589] rounded-lg hover:bg-gray-100 transition-colors">
+<span class="material-symbols-outlined text-lg">attachment</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="scroll-mt-6" id="data-privacy">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">lock</span>
+<h2 class="font-bold text-lg">Data Privacy</h2>
+</div>
+<div class="bg-white dark:bg-[#16222d] rounded-xl border border-[#dbe0e6] dark:border-gray-700 overflow-hidden shadow-sm divide-y divide-[#dbe0e6] dark:divide-gray-700">
+<div class="p-6">
+<div class="flex justify-between items-start gap-4">
+<div class="space-y-2 flex-1">
+<h4 class="text-xs font-bold text-[#617589] uppercase">Q2.1</h4>
+<p class="text-sm font-semibold leading-relaxed">Where is PII (Personally Identifiable Information) stored and how is it encrypted at rest?</p>
+<div class="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-[#dbe0e6] dark:border-gray-700">
+<p class="text-sm text-[#111418] dark:text-white">PII resides in an AWS RDS PostgreSQL instance in the us-east-1 region. Data is encrypted using AES-256 with keys managed in AWS KMS (CMK).</p>
+</div>
+<div class="flex items-center gap-3 mt-3">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg">
+<span class="material-symbols-outlined text-blue-600 text-base">description</span>
+<span class="text-xs font-medium text-blue-700 dark:text-blue-400">kms-policy-v2.pdf</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg">
+<span class="material-symbols-outlined text-blue-600 text-base">image</span>
+<span class="text-xs font-medium text-blue-700 dark:text-blue-400">encryption-diag.png</span>
+</div>
+</div>
+</div>
+<div class="shrink-0 flex flex-col items-end gap-2">
+<span class="px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-[10px] font-bold rounded uppercase">Answered</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="scroll-mt-6" id="access-control">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">key</span>
+<h2 class="font-bold text-lg">Access Control</h2>
+</div>
+<div class="bg-white dark:bg-[#16222d] rounded-xl border border-[#dbe0e6] dark:border-gray-700 overflow-hidden shadow-sm divide-y divide-[#dbe0e6] dark:divide-gray-700">
+<div class="p-6">
+<div class="flex justify-between items-start gap-4">
+<div class="space-y-2 flex-1">
+<h4 class="text-xs font-bold text-[#617589] uppercase">Q3.1</h4>
+<p class="text-sm font-semibold leading-relaxed">Describe your offboarding process for employees with administrative access.</p>
+<div class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/10 rounded-lg border border-yellow-100 dark:border-yellow-900/30">
+<p class="text-sm text-[#111418] dark:text-white italic">User provided no textual answer.</p>
+</div>
+</div>
+<div class="shrink-0 flex flex-col items-end gap-2">
+<span class="px-2 py-1 bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 text-[10px] font-bold rounded uppercase">Missing Info</span>
+<div class="flex gap-2">
+<button class="p-2 bg-red-50 dark:bg-red-900/20 text-red-600 rounded-lg" title="High Priority Flag">
+<span class="material-symbols-outlined text-lg">priority_high</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>
