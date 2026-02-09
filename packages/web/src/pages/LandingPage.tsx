@@ -11,7 +11,6 @@ import {
 export const LandingPage: FC = () => {
   const handleLoginClick = () => {
     console.log('Login clicked');
-    // TODO: Navigate to login page
   };
 
   const handleStartTrialClick = () => {

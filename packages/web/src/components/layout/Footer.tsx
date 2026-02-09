@@ -52,7 +52,7 @@ export const Footer: FC = () => {
                 shield
               </span>
               <h2 className="text-lg font-bold">
-                OpenClaw <span className="text-primary">AI</span>
+                Clawctor <span className="text-primary">AI</span>
               </h2>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs mb-6">
