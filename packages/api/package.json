@@ -1,0 +1,15 @@
+{
+  "name": "@team-clawctor/api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot src/index.ts",
+    "start": "bun src/index.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "^3.0.23",
+    "@team-clawctor/db": "workspace:*",
+    "ai": "^6.0.78"
+  }
+}

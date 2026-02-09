@@ -1,0 +1,198 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Questionnaire submission status
+enum QuestionnaireStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  EVALUATED
+  COMPLETED
+}
+
+// Task status
+enum TaskStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// Report generation status
+enum ReportStatus {
+  NOT_STARTED
+  GENERATING
+  COMPLETED
+  FAILED
+}
+
+// Task - generated after questionnaire submission with AI risk assessment
+model Task {
+  id                    String              @id @default(cuid())
+  
+  // Reference to questionnaire submission
+  questionnaireId       String              @unique
+  
+  // Company info (denormalized for quick access)
+  companyName           String
+  
+  // AI Risk Assessment Results
+  highRiskCount         Int                 @default(0)
+  mediumRiskCount       Int                 @default(0)
+  lowRiskCount          Int                 @default(0)
+  
+  // AI Assessment metadata
+  aiModel               String?             // e.g., "gemini-1.5-flash"
+  aiAssessmentRaw       Json?               // Raw AI response for debugging
+  assessmentSummary     String?             // Brief summary from AI
+  
+  // Task status
+  status                TaskStatus          @default(PENDING)
+  errorMessage          String?             // Error message if processing failed
+  
+  // HTML Report (generated after payment)
+  reportStatus          ReportStatus        @default(NOT_STARTED)
+  htmlReport            String?             @db.Text // Full HTML report content
+  reportGeneratedAt     DateTime?           // When report was generated
+  reportError           String?             // Error message if report generation failed
+  
+  // Payment info
+  paymentTxHash         String?             // Transaction hash of payment
+  paymentAmount         Int?                // Amount paid in AICC tokens (in smallest unit)
+  paidAt                DateTime?           // When payment was confirmed
+  
+  // Timestamps
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  processedAt           DateTime?           // When AI assessment completed
+  
+  @@index([questionnaireId])
+  @@index([status])
+  @@index([reportStatus])
+  @@index([createdAt])
+}
+
+// Questionnaire submission - represents a complete questionnaire submission from a user/company
+model QuestionnaireSubmission {
+  id            String              @id @default(cuid())
+  
+  // Company/Organization info
+  companyName   String
+  organizationId String?
+  
+  // Submission metadata
+  source        String              @default("web_portal") // web_portal, api, import
+  assetHash     String?             // Hash for verification
+  status        QuestionnaireStatus @default(SUBMITTED)
+  
+  // Session verification
+  sessionVerified Boolean           @default(false)
+  submitterEmail  String?
+  submitterName   String?
+  
+  // Timestamps
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  submittedAt   DateTime            @default(now())
+  
+  // Relations
+  sections      QuestionnaireSection[]
+  
+  @@index([companyName])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Section within a questionnaire (e.g., Network Security, Data Privacy)
+model QuestionnaireSection {
+  id              String                    @id @default(cuid())
+  submissionId    String
+  
+  // Section details
+  sectionKey      String                    // e.g., "network_security", "data_privacy"
+  title           String                    // e.g., "Network Security"
+  icon            String?                   // Material icon name
+  order           Int                       @default(0)
+  
+  // Timestamps
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt
+  
+  // Relations
+  submission      QuestionnaireSubmission   @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  answers         QuestionnaireAnswer[]
+  
+  @@unique([submissionId, sectionKey])
+  @@index([submissionId])
+}
+
+// Answer status
+enum AnswerStatus {
+  ANSWERED
+  MISSING_INFO
+  SKIPPED
+  FLAGGED
+}
+
+// Individual question answer
+model QuestionnaireAnswer {
+  id              String              @id @default(cuid())
+  sectionId       String
+  
+  // Question reference
+  questionCode    String              // e.g., "Q1.1", "Q2.1"
+  questionText    String              // The actual question text
+  order           Int                 @default(0)
+  
+  // Answer content
+  answerText      String?             // The text answer provided
+  answerJson      Json?               // For structured answers (multiple choice, etc.)
+  status          AnswerStatus        @default(ANSWERED)
+  
+  // Review flags
+  flaggedForReview Boolean            @default(false)
+  flagPriority     String?            // "high", "medium", "low"
+  reviewNotes      String?
+  
+  // Timestamps
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  
+  // Relations
+  section         QuestionnaireSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  attachments     QuestionnaireAttachment[]
+  
+  @@unique([sectionId, questionCode])
+  @@index([sectionId])
+  @@index([status])
+}
+
+// Attachments/Evidence for answers
+model QuestionnaireAttachment {
+  id              String              @id @default(cuid())
+  answerId        String
+  
+  // File info
+  fileName        String
+  fileType        String              // MIME type
+  fileSize        Int?                // Size in bytes
+  fileUrl         String              // URL or storage path
+  
+  // Metadata
+  description     String?
+  uploadedAt      DateTime            @default(now())
+  
+  // Relations
+  answer          QuestionnaireAnswer @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  
+  @@index([answerId])
+}
