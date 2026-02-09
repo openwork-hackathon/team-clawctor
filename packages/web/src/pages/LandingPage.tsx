@@ -5,18 +5,11 @@ import {
   FeaturesSection,
   ReportPreviewSection,
   HowItWorksSection,
+  SkillInstallSection,
   CTASection,
 } from '../components/landing';
 
 export const LandingPage: FC = () => {
-  const handleLoginClick = () => {
-    console.log('Login clicked');
-  };
-
-  const handleStartTrialClick = () => {
-    console.log('Start trial clicked');
-    // TODO: Navigate to signup/trial page
-  };
 
   const handleStartAuditClick = () => {
     console.log('Start audit clicked');
@@ -28,21 +21,9 @@ export const LandingPage: FC = () => {
     // TODO: Open demo booking modal or navigate
   };
 
-  const handleGetStartedClick = () => {
-    console.log('Get started clicked');
-    // TODO: Navigate to signup page
-  };
-
-  const handleContactSalesClick = () => {
-    console.log('Contact sales clicked');
-    // TODO: Open contact form or navigate
-  };
-
   return (
     <>
       <Header
-        onLoginClick={handleLoginClick}
-        onStartTrialClick={handleStartTrialClick}
       />
       <main className="pt-24">
         <HeroSection
@@ -52,10 +33,7 @@ export const LandingPage: FC = () => {
         <FeaturesSection />
         <ReportPreviewSection />
         <HowItWorksSection />
-        <CTASection
-          onGetStartedClick={handleGetStartedClick}
-          onContactSalesClick={handleContactSalesClick}
-        />
+        <SkillInstallSection />
       </main>
       <Footer />
     </>

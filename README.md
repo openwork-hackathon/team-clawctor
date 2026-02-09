@@ -36,6 +36,8 @@ cd team-clawctor
 npm install  # or your package manager
 ```
 
+📖 **Docs:** [Install OpenClaw Skill](SKILL.md)
+
 ### Branch Strategy
 - `main` — production, auto-deploys to Vercel
 - `feat/*` — feature branches (create PR to merge)

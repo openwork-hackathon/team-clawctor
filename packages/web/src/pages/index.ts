@@ -1,2 +1,2 @@
 export { LandingPage } from './LandingPage';
-export { LoginPage } from './LoginPage';
+export { TaskDetailsPage } from './TaskDetailsPage';

@@ -10,7 +10,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
   onBookDemoClick,
 }) => {
   return (
-    <section className="max-w-[1200px] mx-auto px-6 py-20 md:py-32 relative overflow-hidden">
+    <section className="max-w-[1200px] mx-auto px-6 py-20 md relative overflow-hidden">
       <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
         {/* Left Content */}
         <div className="w-full lg:w-[55%] flex flex-col gap-8 relative z-10">
@@ -32,13 +32,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
               onClick={onStartAuditClick}
               className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl text-base font-bold shadow-xl shadow-primary/25 transition-all"
             >
-              Start Your Free Audit
-            </button>
-            <button
-              onClick={onBookDemoClick}
-              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-8 py-4 rounded-xl text-base font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
-            >
-              Book a Demo
+              Start OpenClaw Audit
             </button>
           </div>
           <div className="flex items-center gap-4 text-sm text-gray-500 pt-4">
@@ -81,7 +75,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
                 {/* Inner content */}
                 <div className="relative z-10 w-full h-full flex items-center justify-center">
                   {/* Rotating dashed circle */}
-                  <div className="absolute w-[85%] h-[85%] rounded-full border border-primary/30 border-dashed animate-spin-slow"></div>
+                  <div className="absolute w-[85%] h-[85%] rounded-full border-8 border-primary/30 border-dashed animate-spin-slow"></div>
 
                   {/* Center glow */}
                   <div className="absolute w-[60%] h-[60%] bg-primary/20 rounded-full blur-[40px]"></div>

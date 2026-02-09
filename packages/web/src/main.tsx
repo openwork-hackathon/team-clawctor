@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { WalletProvider } from './components/wallet';
 import './index.css';
 
 // Import the generated route tree
@@ -18,6 +19,8 @@ declare module '@tanstack/react-router' {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <WalletProvider>
+      <RouterProvider router={router} />
+    </WalletProvider>
   </StrictMode>
 );

@@ -5,11 +5,14 @@
     "packages/*"
   ],
   "scripts": {
+    "dev": "bun run dev:api & bun run dev:web",
     "dev:api": "bun run --cwd packages/api dev",
     "dev:web": "bun run --cwd packages/web dev",
     "build:web": "bun run --cwd packages/web build",
-    "prisma:generate": "bun run --cwd packages/db prisma:generate",
-    "prisma:migrate": "bun run --cwd packages/db prisma:migrate",
+    "db:generate": "bun run --cwd packages/db prisma:generate",
+    "db:migrate": "bun run --cwd packages/db prisma:migrate",
+    "db:push": "bun run --cwd packages/db prisma:push",
+    "db:studio": "bun run --cwd packages/db prisma:studio",
     "format": "bunx prettier -w ."
   },
   "overrides": {

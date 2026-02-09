@@ -16,7 +16,6 @@ const footerSections: FooterSection[] = [
     links: [
       { label: 'Features', href: '#' },
       { label: 'Integrations', href: '#' },
-      { label: 'Pricing', href: '#' },
       { label: 'Changelog', href: '#' },
     ],
   },
@@ -24,7 +23,6 @@ const footerSections: FooterSection[] = [
     title: 'Company',
     links: [
       { label: 'About Us', href: '#' },
-      { label: 'Careers', href: '#' },
       { label: 'Privacy Policy', href: '#' },
       { label: 'Terms of Service', href: '#' },
     ],
@@ -34,8 +32,6 @@ const footerSections: FooterSection[] = [
     links: [
       { label: 'Documentation', href: '#' },
       { label: 'API Reference', href: '#' },
-      { label: 'Community', href: '#' },
-      { label: 'Help Center', href: '#' },
     ],
   },
 ];
