@@ -45,9 +45,6 @@ function generateRiskRows(risks: RiskItem[]): string {
   <td class="px-6 py-4 font-bold text-sm dark:text-gray-200">${escapeHtml(risk.description)}</td>
   <td class="px-6 py-4 text-sm text-[#617589] font-medium">${escapeHtml(risk.category)}</td>
   <td class="px-6 py-4 text-sm font-black text-center ${cvssClass}">${risk.cvss?.toFixed(1) || "N/A"}</td>
-  <td class="px-6 py-4 text-right">
-    <button class="text-primary hover:underline text-sm font-bold">Details</button>
-  </td>
 </tr>`;
     })
     .join("\n");
@@ -322,7 +319,6 @@ export function generateReportHTML(task: TaskData, assessment: DetailedAssessmen
                     <th class="px-6 py-4 text-xs font-black text-[#617589] uppercase tracking-widest">Risk Name</th>
                     <th class="px-6 py-4 text-xs font-black text-[#617589] uppercase tracking-widest">Category</th>
                     <th class="px-6 py-4 text-xs font-black text-[#617589] uppercase tracking-widest text-center">CVSS</th>
-                    <th class="px-6 py-4 text-xs font-black text-[#617589] uppercase tracking-widest text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-[#dbe0e6] dark:divide-[#2a343d]">

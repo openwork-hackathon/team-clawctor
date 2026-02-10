@@ -2,13 +2,16 @@ import { useState } from 'react';
 import type { FC } from 'react';
 
 const SKILL_URL = 'https://raw.githubusercontent.com/openwork-hackathon/team-clawctor/main/SKILL.md';
+const INSTALL_COMMAND = `Install the SKILL from
+https://raw.githubusercontent.com/openwork-hackathon/team-clawctor/main/SKILL.md
+Then call team-clawctor to retrieve the checklist and fill it out.`;
 
 export const SkillInstallSection: FC = () => {
   const [copied, setCopied] = useState(false);
 
-  const handleCopyUrl = async () => {
+  const handleCopyCommand = async () => {
     try {
-      await navigator.clipboard.writeText(SKILL_URL);
+      await navigator.clipboard.writeText(INSTALL_COMMAND);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -62,16 +65,16 @@ export const SkillInstallSection: FC = () => {
                 1
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-lg mb-2">Copy the Skill URL</h3>
+                <h3 className="font-semibold text-lg mb-2">Send this to your agent to get started</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                  Click the button below to copy the SKILL.md URL to your clipboard.
+                  Click the button below to copy the instructions to your clipboard, then paste it in your agent chat.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <div className="flex-1 bg-gray-100 dark:bg-gray-900 rounded-lg px-4 py-3 font-mono text-sm text-gray-700 dark:text-gray-300 overflow-x-auto">
-                    <span className="whitespace-nowrap">{SKILL_URL}</span>
+                    <pre className="whitespace-pre-wrap">{INSTALL_COMMAND}</pre>
                   </div>
                   <button
-                    onClick={handleCopyUrl}
+                    onClick={handleCopyCommand}
                     className={`flex-shrink-0 px-6 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
                       copied
                         ? 'bg-green-500 text-white'
@@ -90,7 +93,7 @@ export const SkillInstallSection: FC = () => {
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
-                        Copy URL
+                        Copy
                       </>
                     )}
                   </button>
@@ -104,22 +107,9 @@ export const SkillInstallSection: FC = () => {
                 2
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-lg mb-2">Open OpenClaw Settings</h3>
+                <h3 className="font-semibold text-lg mb-2">Open the Report to View Results</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
-                  In your OpenClaw workspace, navigate to <span className="font-mono bg-gray-100 dark:bg-gray-900 px-2 py-0.5 rounded">Settings</span> → <span className="font-mono bg-gray-100 dark:bg-gray-900 px-2 py-0.5 rounded">Skills</span> → <span className="font-mono bg-gray-100 dark:bg-gray-900 px-2 py-0.5 rounded">Add New Skill</span>
-                </p>
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div className="flex gap-4 mb-8">
-              <div className="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
-                3
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg mb-2">Paste and Save</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">
-                  Paste the copied URL in the skill URL field and click <span className="font-mono bg-gray-100 dark:bg-gray-900 px-2 py-0.5 rounded">Save Skill</span>. The skill will be automatically loaded and ready to use.
+                  After completing the questionnaire, the system will automatically generate a security assessment report. Click to view the report for detailed security evaluation results and improvement recommendations.
                 </p>
               </div>
             </div>
