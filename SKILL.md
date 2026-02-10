@@ -349,6 +349,5 @@ The user can:
 ## Support
 
 For API support or questions:
-- Email: api-support@clawctor.com
-- Documentation: https://docs.clawctor.com
-- Status Page: https://status.clawctor.com
+- Email: support@team-clawctor.tonob.net
+- Documentation: https://team-clawctor.tonob.net

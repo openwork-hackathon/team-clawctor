@@ -5,7 +5,6 @@ CREATE TYPE "TaskStatus" AS ENUM ('PENDING', 'PROCESSING', 'COMPLETED', 'FAILED'
 CREATE TABLE "Task" (
     "id" TEXT NOT NULL,
     "questionnaireId" TEXT NOT NULL,
-    "companyName" TEXT NOT NULL,
     "highRiskCount" INTEGER NOT NULL DEFAULT 0,
     "mediumRiskCount" INTEGER NOT NULL DEFAULT 0,
     "lowRiskCount" INTEGER NOT NULL DEFAULT 0,

@@ -43,10 +43,10 @@ function generateAuditId(taskId: string): string {
 export function TaskDetailsPage() {
   const { taskId } = useParams({ from: '/tasks/$taskId' });
   const { task, isLoading, error, refetch } = useTask(taskId);
-  const { paymentStatus, txHash, pay, reset: resetPayment } = useAICCPayment();
+  const { paymentStatus, txHash } = useAICCPayment();
   
   const [viewMode, setViewMode] = useState<'preview' | 'generating' | 'report'>('preview');
-  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
+  const [pollingInterval, setPollingInterval] = useState<number | null>(null);
 
   // Record payment and trigger report generation
   const recordPaymentAndGenerateReport = useCallback(async (transactionHash: string) => {
@@ -354,7 +354,7 @@ export function TaskDetailsPage() {
         <TaskHeader
           auditId={generateAuditId(task.id)}
           createdDate={formatDate(task.createdAt)}
-          title={`AI Security Audit: ${task.companyName}`}
+          title={`AI Security Audit`}
         />
 
         {/* Risk Summary Row */}

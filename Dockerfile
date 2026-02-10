@@ -6,39 +6,16 @@ FROM oven/bun:1-alpine AS base
 WORKDIR /app
 
 # Copy package files
-COPY package.json bun.lockb ./
+COPY package.json ./
 COPY packages/api/package.json ./packages/api/
 COPY packages/web/package.json ./packages/web/
 COPY packages/db/package.json ./packages/db/
 
 # Install all dependencies
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Copy source code
 COPY packages ./packages
-
-# =============================================================================
-# DB Stage - Prisma client generation
-# =============================================================================
-FROM base AS db
-
-WORKDIR /app/packages/db
-
-# Generate Prisma Client
-RUN bun run prisma:generate
-
-# =============================================================================
-# API Build Stage - Build API service
-# =============================================================================
-FROM base AS api-builder
-
-WORKDIR /app
-
-# Copy generated Prisma client from db stage
-COPY --from=db /app/packages/db ./packages/db
-
-# API source is already copied in base stage
-# No additional build step needed for Bun
 
 # =============================================================================
 # API Production Stage - Final API image
@@ -48,19 +25,18 @@ FROM oven/bun:1-alpine AS api
 WORKDIR /app
 
 # Install production dependencies only
-COPY package.json bun.lockb ./
+COPY package.json ./
 COPY packages/api/package.json ./packages/api/
 COPY packages/db/package.json ./packages/db/
 
-RUN bun install --frozen-lockfile --production
+RUN bun install --production
 
 # Copy application code
 COPY packages/api ./packages/api
 COPY packages/db ./packages/db
 
-# Copy generated Prisma client
-COPY --from=db /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=db /app/node_modules/@prisma ./node_modules/@prisma
+# Generate Prisma Client in the final stage
+RUN cd packages/db && bunx prisma generate
 
 # Create logs directory
 RUN mkdir -p /app/logs && \

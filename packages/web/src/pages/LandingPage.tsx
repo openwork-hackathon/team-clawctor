@@ -6,7 +6,6 @@ import {
   ReportPreviewSection,
   HowItWorksSection,
   SkillInstallSection,
-  CTASection,
 } from '../components/landing';
 
 export const LandingPage: FC = () => {

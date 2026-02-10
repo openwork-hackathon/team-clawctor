@@ -1,9 +1,3 @@
--- AlterTable: Remove companyName from QuestionnaireSubmission
-ALTER TABLE "QuestionnaireSubmission" DROP COLUMN "companyName";
-
--- AlterTable: Remove companyName index
-DROP INDEX IF EXISTS "QuestionnaireSubmission_companyName_idx";
-
 -- First, we need to add the questionAnswerId column to Task table
 -- We'll add it as nullable first, then update existing records, then make it required
 ALTER TABLE "Task" ADD COLUMN "questionAnswerId" TEXT;
@@ -40,6 +34,4 @@ DROP INDEX IF EXISTS "Task_questionnaireId_idx";
 -- Drop old questionnaireId unique constraint
 DROP INDEX IF EXISTS "Task_questionnaireId_key";
 
--- Finally, drop the old questionnaireId and companyName columns from Task
 ALTER TABLE "Task" DROP COLUMN "questionnaireId";
-ALTER TABLE "Task" DROP COLUMN "companyName";
