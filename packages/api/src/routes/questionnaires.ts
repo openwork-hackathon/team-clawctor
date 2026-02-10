@@ -234,8 +234,8 @@ export async function submitQuestionnaire(req: Request): Promise<Response> {
       },
     } as any);
 
-    const sectionsCount = submission.sections.length;
-    const totalQuestions = submission.sections.reduce(
+    const sectionsCount = (submission as any).sections.length;
+    const totalQuestions = (submission as any).sections.reduce(
       (acc: number, sec: any) => acc + sec.answers.filter((a: any) => a.answerText || a.answerJson).length,
       0
     );
@@ -340,15 +340,6 @@ export async function getQuestionnaire(_req: Request, id: string): Promise<Respo
       include: {
         sections: {
           orderBy: { order: 'asc' },
-          include: {
-            answers: {
-              orderBy: { createdAt: 'asc' },
-              include: {
-                question: true,
-                attachments: true,
-              },
-            },
-          },
         },
       },
     } as any);
@@ -360,21 +351,33 @@ export async function getQuestionnaire(_req: Request, id: string): Promise<Respo
       );
     }
 
-    // Transform to simplified format
+    // Get questions for each section
+    const sectionsWithQuestions = await Promise.all(
+      (submission as any).sections.map(async (section: any) => {
+        const questions = await (prisma as any).question.findMany({
+          where: { sectionKey: section.sectionKey },
+          orderBy: { order: 'asc' },
+          select: {
+            id: true,
+            questionCode: true,
+            questionText: true,
+            order: true,
+          },
+        });
+
+        return {
+          id: section.id,
+          title: section.title,
+          icon: section.icon,
+          order: section.order,
+          questions,
+        };
+      })
+    );
+
     const simplifiedData = {
       id: submission.id,
-      sections: submission.sections.map((section: any) => ({
-        id: section.id,
-        title: section.title,
-        icon: section.icon,
-        order: section.order,
-        questions: section.answers.map((answer: any) => ({
-          id: answer.id,
-          questionCode: answer.question.questionCode,
-          questionText: answer.question.questionText,
-          order: answer.question.order,
-        })),
-      })),
+      sections: sectionsWithQuestions,
     };
 
     return Response.json({
@@ -398,15 +401,6 @@ export async function getLatestQuestionnaire(_req: Request): Promise<Response> {
       include: {
         sections: {
           orderBy: { order: 'asc' },
-          include: {
-            answers: {
-              orderBy: { createdAt: 'asc' },
-              include: {
-                question: true,
-                attachments: true,
-              },
-            },
-          },
         },
       },
     } as any);
@@ -418,21 +412,33 @@ export async function getLatestQuestionnaire(_req: Request): Promise<Response> {
       );
     }
 
-    // Transform to simplified format (same as getQuestionnaire)
+    // Get questions for each section
+    const sectionsWithQuestions = await Promise.all(
+      (submission as any).sections.map(async (section: any) => {
+        const questions = await (prisma as any).question.findMany({
+          where: { sectionKey: section.sectionKey },
+          orderBy: { order: 'asc' },
+          select: {
+            id: true,
+            questionCode: true,
+            questionText: true,
+            order: true,
+          },
+        });
+
+        return {
+          id: section.id,
+          title: section.title,
+          icon: section.icon,
+          order: section.order,
+          questions,
+        };
+      })
+    );
+
     const simplifiedData = {
       id: submission.id,
-      sections: submission.sections.map((section: any) => ({
-        id: section.id,
-        title: section.title,
-        icon: section.icon,
-        order: section.order,
-        questions: section.answers.map((answer: any) => ({
-          id: answer.id,
-          questionCode: answer.question.questionCode,
-          questionText: answer.question.questionText,
-          order: answer.question.order,
-        })),
-      })),
+      sections: sectionsWithQuestions,
     };
 
     return Response.json({

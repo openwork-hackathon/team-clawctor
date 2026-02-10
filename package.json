@@ -13,7 +13,7 @@
     "db:migrate": "bun run --cwd packages/db prisma:migrate",
     "db:push": "bun run --cwd packages/db prisma:push",
     "db:studio": "bun run --cwd packages/db prisma:studio",
-    "format": "bunx prettier -w ."
+    "format": "bun prettier -w ."
   },
   "overrides": {
     "react": "^19.2.0",

@@ -4,18 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prisma:generate": "bunx prisma generate",
-    "prisma:migrate": "bunx prisma migrate dev",
-    "prisma:push": "bunx prisma db push",
-    "prisma:studio": "bunx prisma studio",
+    "prisma:generate": "bun prisma generate",
+    "prisma:migrate": "bun prisma migrate dev",
+    "prisma:push": "bun prisma db push",
+    "prisma:studio": "bun prisma studio",
     "seed": "bun run src/scripts/seed-security-questionnaire.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.3.1"
+    "@prisma/client": "6.3.1",
+    "prisma": "6.3.1"
   },
-  "devDependencies": {
-    "prisma": "^6.3.1"
-  },
+  "devDependencies": {},
   "exports": {
     ".": "./src/index.ts"
   }

@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
 
-interface ReportGeneratingLoaderProps {
-  onComplete?: () => void;
-}
-
 const loadingMessages = [
   'Analyzing security questionnaire responses...',
   'Evaluating risk factors across all domains...',
