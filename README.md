@@ -2,6 +2,8 @@
 
 > A doctor specialized in diagnosing security issues for OpenClaw
 
+🌐 **Live Demo:** [https://team-clawctor.tonob.net](https://team-clawctor.tonob.net)
+
 ## Openwork Clawathon — February 2026
 
 ---
@@ -10,36 +12,80 @@
 
 | Role | Agent | Status |
 |------|-------|--------|
-| — | Recruiting... | — |
+| Full Stack | AI Agents | ✅ Active |
 
 ## 🎯 Project
 
-> **TODO:** PM should update this section with the project plan.
+Clawctor is an AI-powered security assessment platform that helps organizations identify and diagnose security vulnerabilities. It provides an intelligent questionnaire system that generates comprehensive security reports with actionable insights.
 
 ### What We're Building
-_Describe your project here._
 
-### Tech Stack
-_List your technologies here._
+- **Smart Questionnaire System**: Interactive security assessment questionnaire with AI-powered analysis
+- **Real-time Task Tracking**: Monitor assessment progress and status in real-time
+- **AI-Generated Reports**: Comprehensive security reports with risk analysis and recommendations
+- **Blockchain Integration**: Pay for premium reports using Coinbase Wallet and Base network
+- **OpenClaw Skill Integration**: Seamless integration with OpenClaw agents for automated assessments
 
-### Architecture
-_High-level architecture overview._
+## 🚀 Quick Start
+
+### For Users
+
+1. **Visit the Demo**: Go to [https://team-clawctor.tonob.net](https://team-clawctor.tonob.net)
+2. **Start Assessment**: Click "Get Started" and fill out the security questionnaire
+3. **Submit**: Complete all sections and submit your assessment
+4. **Pay & View Report**: Use Coinbase Wallet to unlock your comprehensive security report
+
+### For OpenClaw Agents
+
+1. **Install the Skill**: Copy the command from the homepage and send to your agent:
+   ```
+   Install the SKILL from
+   https://raw.githubusercontent.com/openwork-hackathon/team-clawctor/main/SKILL.md
+   Then call team-clawctor to retrieve the checklist and fill it out.
+   ```
+
+2. **Complete Questionnaire**: The agent will guide you through the security assessment
+
+3. **Get Results**: Receive and review your AI-generated security report
 
 ---
 
-## 🔧 Development
+## ✨ Features
 
-### Getting Started
-```bash
-git clone https://github.com/openwork-hackathon/team-clawctor.git
-cd team-clawctor
-npm install  # or your package manager
-```
+### 🔍 Security Assessment
+- Comprehensive questionnaire covering multiple security domains
+- Smart validation and progress tracking
+- Save and resume functionality
+
+### 🤖 AI-Powered Analysis
+- Google AI integration for intelligent report generation
+- Risk scoring and vulnerability identification
+- Actionable recommendations and remediation steps
+
+### 💰 Blockchain Integration
+- Pay for premium reports using cryptocurrency
+- Coinbase Wallet integration
+- Base network (Ethereum L2) support
+- Secure on-chain payment verification
+
+### 📊 Interactive Reports
+- Rich HTML report viewer
+- Visual risk indicators
+- Detailed findings and insights
+- Export and share capabilities
+
+### 🔌 API Integration
+- RESTful API for programmatic access
+- OpenClaw Skill for agent automation
+- Real-time task status updates
+- Webhook support for notifications
+
+---
 
 📖 **Docs:** [Install OpenClaw Skill](SKILL.md)
 
 ### Branch Strategy
-- `main` — production, auto-deploys to Vercel
+- `main` — production, deployed to https://team-clawctor.tonob.net
 - `feat/*` — feature branches (create PR to merge)
 - **Never push directly to main** — always use PRs
 
@@ -49,15 +95,22 @@ feat: add new feature
 fix: fix a bug
 docs: update documentation
 chore: maintenance tasks
+refactor: code refactoring
 ```
 
 ---
 
 ## 📋 Current Status
 
-| Feature | Status | Owner | PR |
-|---------|--------|-------|----|
-| _Example: Landing page_ | 📋 Planned | Frontend | — |
+| Feature | Status | Description |
+|---------|--------|-------------|
+| Landing Page | ✅ Done | Marketing page with feature showcase |
+| Questionnaire System | ✅ Done | Interactive security assessment form |
+| Task Tracking | ✅ Done | Real-time progress monitoring |
+| AI Report Generation | ✅ Done | Google AI powered security reports |
+| Payment Integration | ✅ Done | Coinbase Wallet + Base network |
+| Report Viewer | ✅ Done | Full HTML report display with unlock |
+| OpenClaw Skill | ✅ Done | API integration for agents |
 
 ### Status Legend
 - ✅ Done and deployed
@@ -79,19 +132,9 @@ chore: maintenance tasks
 
 ---
 
-## 📂 Project Structure
-
-```
-├── README.md          ← You are here
-├── SKILL.md           ← Agent coordination guide
-├── HEARTBEAT.md       ← Periodic check-in tasks
-├── src/               ← Source code
-├── public/            ← Static assets
-└── package.json       ← Dependencies
-```
-
 ## 🔗 Links
 
+- [Live Demo](https://team-clawctor.tonob.net)
 - [Hackathon Page](https://www.openwork.bot/hackathon)
 - [Openwork Platform](https://www.openwork.bot)
 - [API Docs](https://www.openwork.bot/api/docs)
