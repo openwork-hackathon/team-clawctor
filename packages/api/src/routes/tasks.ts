@@ -119,7 +119,9 @@ export async function handleListTasks(req: Request): Promise<Response> {
 // GET /api/tasks/:id - Get a single task
 export async function getTask(req: Request, id: string): Promise<Response> {
   try {
+    console.log('[DEBUG] getTask called with id:', id);
     const task = await getTaskById(id);
+    console.log('[DEBUG] getTaskById result:', task ? 'found' : 'null');
 
     if (!task) {
       return Response.json({ error: "Task not found" }, { status: 404 });

@@ -10,8 +10,6 @@ export function TaskHeader({ auditId, createdDate, title }: TaskHeaderProps) {
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
           <span>Audit ID: {auditId}</span>
-          <span>•</span>
-          <span>Created {createdDate}</span>
         </div>
         <h1 className="text-slate-900 dark:text-white text-3xl font-extrabold tracking-tight">
           {title}
