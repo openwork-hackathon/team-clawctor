@@ -284,12 +284,7 @@ export function TaskDetailsPage() {
             low: { count: task.lowRiskCount, description: 'Optimization suggested' },
           }} />
           <div className="mt-6">
-            <ReportGeneratingLoader
-              onComplete={() => {
-                setViewMode('report');
-                refetch();
-              }}
-            />
+            <ReportGeneratingLoader />
           </div>
         </div>
       </main>

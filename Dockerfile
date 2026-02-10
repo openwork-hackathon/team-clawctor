@@ -29,14 +29,14 @@ COPY package.json ./
 COPY packages/api/package.json ./packages/api/
 COPY packages/db/package.json ./packages/db/
 
-RUN bun install --production
+RUN bun install
 
 # Copy application code
 COPY packages/api ./packages/api
 COPY packages/db ./packages/db
 
 # Generate Prisma Client in the final stage
-RUN cd packages/db && bunx prisma generate
+RUN cd packages/db && bun prisma generate
 
 # Create logs directory
 RUN mkdir -p /app/logs && \
@@ -53,7 +53,7 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
 
 # Run database migrations and start server
 WORKDIR /app/packages/api
-CMD ["sh", "-c", "cd ../db && bunx prisma migrate deploy && cd ../api && bun src/index.ts"]
+CMD ["sh", "-c", "cd ../db && bun prisma migrate deploy && cd ../api && bun src/index.ts"]
 
 # =============================================================================
 # Web Build Stage - Build frontend with Vite
