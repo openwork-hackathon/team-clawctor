@@ -9,7 +9,7 @@ interface ReportPreviewPanelProps {
     insights: number;
     format: string;
   };
-  onUnlockSuccess?: () => void;
+  onUnlockSuccess?: (txHash: `0x${string}`) => void;
   onTopUp?: () => void;
 }
 

@@ -17,7 +17,7 @@ export const config = createConfig({
   connectors: [
     coinbaseWallet({
       appName: 'Clawctor AI Security',
-      preference: 'all',
+      preference: { options: 'all' },
     }),
   ],
   transports: {

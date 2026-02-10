@@ -8,7 +8,6 @@ import { FooterDetails } from '../components/task-details/FooterDetails';
 import { ReportGeneratingLoader } from '../components/task-details/ReportGeneratingLoader';
 import { InlineReportViewer } from '../components/task-details/FullReportViewer';
 import { useTask } from '../hooks/useTask';
-import { useAICCPayment } from '../hooks/useAICCPayment';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -33,8 +32,7 @@ function generateAuditId(taskId: string): string {
 export function TaskDetailsPage() {
   const { taskId } = useParams({ from: '/tasks/$taskId' });
   const { task, isLoading, error, refetch } = useTask(taskId);
-  const { paymentStatus, txHash } = useAICCPayment();
-  
+
   const [viewMode, setViewMode] = useState<'preview' | 'generating' | 'report'>('preview');
   const [pollingInterval, setPollingInterval] = useState<number | null>(null);
 
@@ -101,13 +99,6 @@ export function TaskDetailsPage() {
     setPollingInterval(interval);
   }, [taskId, refetch]);
 
-  // Handle payment success
-  useEffect(() => {
-    if (paymentStatus === 'success' && txHash) {
-      recordPaymentAndGenerateReport(txHash);
-    }
-  }, [paymentStatus, txHash, recordPaymentAndGenerateReport]);
-
   // Check initial report status
   useEffect(() => {
     if (task) {
@@ -129,8 +120,8 @@ export function TaskDetailsPage() {
     };
   }, [pollingInterval]);
 
-  const handleUnlockSuccess = () => {
-    console.log('Payment initiated, waiting for confirmation...');
+  const handleUnlockSuccess = (transactionHash: `0x${string}`) => {
+    recordPaymentAndGenerateReport(transactionHash);
   };
 
   const handleTopUp = () => {
