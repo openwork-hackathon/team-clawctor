@@ -24,16 +24,6 @@ const reportOutlineSections = [
 // AICC Token cost for unlocking the report
 const REPORT_UNLOCK_COST = 2500;
 
-// Helper to format date
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-}
-
 // Helper to generate audit ID from task ID
 function generateAuditId(taskId: string): string {
   const shortId = taskId.slice(-6).toUpperCase();
@@ -190,7 +180,6 @@ export function TaskDetailsPage() {
         <div className="layout-content-container flex flex-col max-w-[1200px] w-full px-4 md:px-10">
           <TaskHeader
             auditId={generateAuditId(task.id)}
-            createdDate={formatDate(task.createdAt)}
             title="AI Security Audit"
           />
           <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 bg-[#1a2632] rounded-xl p-8 mt-6">
@@ -220,7 +209,6 @@ export function TaskDetailsPage() {
         <div className="layout-content-container flex flex-col max-w-[1200px] w-full px-4 md:px-10">
           <TaskHeader
             auditId={generateAuditId(task.id)}
-            createdDate={formatDate(task.createdAt)}
             title="AI Security Audit"
           />
           <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 bg-[#1a2632] rounded-xl p-8 mt-6">
@@ -248,7 +236,6 @@ export function TaskDetailsPage() {
         <div className="layout-content-container flex flex-col max-w-[1200px] w-full px-4 md:px-10">
           <TaskHeader
             auditId={generateAuditId(task.id)}
-            createdDate={formatDate(task.createdAt)}
             title="AI Security Audit"
           />
           <RiskSummaryRow data={{
@@ -275,7 +262,6 @@ export function TaskDetailsPage() {
         <div className="layout-content-container flex flex-col max-w-[1200px] w-full px-4 md:px-10">
           <TaskHeader
             auditId={generateAuditId(task.id)}
-            createdDate={formatDate(task.createdAt)}
             title="AI Security Audit"
           />
           <RiskSummaryRow data={{
@@ -298,7 +284,6 @@ export function TaskDetailsPage() {
         <div className="layout-content-container flex flex-col max-w-[1200px] w-full px-4 md:px-10">
           <TaskHeader
             auditId={generateAuditId(task.id)}
-            createdDate={formatDate(task.createdAt)}
             title="AI Security Audit"
           />
           <RiskSummaryRow data={{
@@ -348,7 +333,6 @@ export function TaskDetailsPage() {
         {/* Task Header */}
         <TaskHeader
           auditId={generateAuditId(task.id)}
-          createdDate={formatDate(task.createdAt)}
           title={`AI Security Audit`}
         />
 
