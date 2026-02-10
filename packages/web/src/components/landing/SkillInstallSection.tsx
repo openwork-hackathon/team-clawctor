@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { FC } from 'react';
 
-const SKILL_URL = 'https://raw.githubusercontent.com/openwork-hackathon/team-clawctor/main/SKILL.md';
 const INSTALL_COMMAND = `Install the SKILL from
 https://raw.githubusercontent.com/openwork-hackathon/team-clawctor/main/SKILL.md
 Then call team-clawctor to retrieve the checklist and fill it out.`;
