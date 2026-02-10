@@ -34,7 +34,6 @@ DROP TABLE "verification_tokens";
 -- CreateTable
 CREATE TABLE "QuestionnaireSubmission" (
     "id" TEXT NOT NULL,
-    "companyName" TEXT NOT NULL,
     "source" TEXT NOT NULL DEFAULT 'web_portal',
     "assetHash" TEXT,
     "status" "QuestionnaireStatus" NOT NULL DEFAULT 'SUBMITTED',
@@ -94,9 +93,6 @@ CREATE TABLE "QuestionnaireAttachment" (
 
     CONSTRAINT "QuestionnaireAttachment_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE INDEX "QuestionnaireSubmission_companyName_idx" ON "QuestionnaireSubmission"("companyName");
 
 -- CreateIndex
 CREATE INDEX "QuestionnaireSubmission_status_idx" ON "QuestionnaireSubmission"("status");

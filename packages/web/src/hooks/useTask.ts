@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 // Report status type
 export type ReportStatus = 'NOT_STARTED' | 'GENERATING' | 'COMPLETED' | 'FAILED';

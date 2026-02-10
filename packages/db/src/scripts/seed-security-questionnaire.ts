@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 // Security Questionnaire Data Structure
 const securityQuestionnaire = {
-  companyName: "clawctor",
   source: "system_seed",
   status: "DRAFT" as const,
   sections: [
@@ -321,7 +320,6 @@ async function seedQuestionnaire() {
     // Create questionnaire submission record
     const submission = await prisma.questionnaireSubmission.create({
       data: {
-        companyName: securityQuestionnaire.companyName,
         source: securityQuestionnaire.source,
         status: securityQuestionnaire.status,
         sessionVerified: false,

@@ -15,7 +15,7 @@ const loadingMessages = [
   'Finalizing security assessment...',
 ];
 
-export function ReportGeneratingLoader({ onComplete }: ReportGeneratingLoaderProps) {
+export function ReportGeneratingLoader() {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [progress, setProgress] = useState(0);
 
