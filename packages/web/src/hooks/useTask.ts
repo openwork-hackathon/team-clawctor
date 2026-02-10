@@ -6,8 +6,7 @@ export type ReportStatus = 'NOT_STARTED' | 'GENERATING' | 'COMPLETED' | 'FAILED'
 // Task data type matching the API response
 export interface Task {
   id: string;
-  questionnaireId: string;
-  companyName: string;
+  questionAnswerId: string;
   highRiskCount: number;
   mediumRiskCount: number;
   lowRiskCount: number;

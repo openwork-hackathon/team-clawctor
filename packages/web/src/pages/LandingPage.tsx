@@ -13,12 +13,6 @@ export const LandingPage: FC = () => {
 
   const handleStartAuditClick = () => {
     console.log('Start audit clicked');
-    // TODO: Navigate to audit start flow
-  };
-
-  const handleBookDemoClick = () => {
-    console.log('Book demo clicked');
-    // TODO: Open demo booking modal or navigate
   };
 
   return (
@@ -28,7 +22,6 @@ export const LandingPage: FC = () => {
       <main className="pt-24">
         <HeroSection
           onStartAuditClick={handleStartAuditClick}
-          onBookDemoClick={handleBookDemoClick}
         />
         <FeaturesSection />
         <ReportPreviewSection />

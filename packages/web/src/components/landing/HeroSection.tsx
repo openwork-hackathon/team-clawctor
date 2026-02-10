@@ -1,13 +1,10 @@
 import type { FC } from 'react';
 
 interface HeroSectionProps {
-  onStartAuditClick?: () => void;
-  onBookDemoClick?: () => void;
-}
+  onStartAuditClick?: () => void;}
 
 export const HeroSection: FC<HeroSectionProps> = ({
   onStartAuditClick,
-  onBookDemoClick,
 }) => {
   return (
     <section className="max-w-[1200px] mx-auto px-6 py-20 md relative overflow-hidden">
@@ -16,7 +13,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
         <div className="w-full lg:w-[55%] flex flex-col gap-8 relative z-10">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider w-fit">
             <span className="material-symbols-outlined text-sm">verified</span>
-            Powered by OpenClaw Engine
+            Powered by Clawctor Engine
           </div>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] tracking-tight">
             AI-Driven Security Auditing for the{' '}
@@ -141,12 +138,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
                       <div className="h-full bg-cyan-400 w-3/4"></div>
                     </div>
                     <span className="text-[9px] font-mono text-cyan-400 uppercase tracking-widest">
-                      Integrity: 98%
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-[9px] font-mono text-primary uppercase tracking-widest">
-                      Live Monitor
+                      Integrity: 100%
                     </span>
                   </div>
                 </div>

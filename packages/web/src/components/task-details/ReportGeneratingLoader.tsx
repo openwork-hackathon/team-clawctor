@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 interface ReportGeneratingLoaderProps {
-  companyName: string;
   onComplete?: () => void;
 }
 
@@ -16,7 +15,7 @@ const loadingMessages = [
   'Finalizing security assessment...',
 ];
 
-export function ReportGeneratingLoader({ companyName, onComplete }: ReportGeneratingLoaderProps) {
+export function ReportGeneratingLoader({ onComplete }: ReportGeneratingLoaderProps) {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [progress, setProgress] = useState(0);
 
@@ -58,7 +57,7 @@ export function ReportGeneratingLoader({ companyName, onComplete }: ReportGenera
       <div className="text-center">
         <h2 className="text-white text-2xl font-bold mb-2">Generating Your Security Report</h2>
         <p className="text-[#93adc8] text-lg">
-          AI is analyzing <span className="text-[#0d7df2] font-semibold">{companyName}</span>
+          AI is analyzing your security responses
         </p>
       </div>
 

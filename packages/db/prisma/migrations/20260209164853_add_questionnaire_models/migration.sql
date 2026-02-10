@@ -35,7 +35,6 @@ DROP TABLE "verification_tokens";
 CREATE TABLE "QuestionnaireSubmission" (
     "id" TEXT NOT NULL,
     "companyName" TEXT NOT NULL,
-    "organizationId" TEXT,
     "source" TEXT NOT NULL DEFAULT 'web_portal',
     "assetHash" TEXT,
     "status" "QuestionnaireStatus" NOT NULL DEFAULT 'SUBMITTED',

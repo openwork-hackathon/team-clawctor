@@ -11,45 +11,74 @@ import {
   recordPaymentAndGenerateReport,
 } from "../services/ai-report-generator";
 
-// POST /api/tasks - Create a task from questionnaire (manual trigger)
+// POST /api/tasks - Create a task from question answer (manual trigger)
 export async function createTask(req: Request): Promise<Response> {
   try {
     const body = await req.json();
-    const { questionnaireId } = body as { questionnaireId: string };
+    const { questionnaireId, questionAnswerId } = body as {
+      questionnaireId?: string;
+      questionAnswerId?: string;
+    };
 
-    if (!questionnaireId) {
+    if (!questionnaireId && !questionAnswerId) {
       return Response.json(
-        { error: "questionnaireId is required" },
+        { error: "Either questionnaireId or questionAnswerId is required" },
         { status: 400 }
       );
     }
 
-    // Check if task already exists for this questionnaire
-    const existingTask = await getTaskByQuestionnaireId(questionnaireId);
-    if (existingTask) {
+    // If questionnaireId provided, check if task already exists
+    if (questionnaireId) {
+      const existingTask = await getTaskByQuestionnaireId(questionnaireId);
+      if (existingTask) {
+        return Response.json(
+          {
+            error: "Task already exists for this questionnaire",
+            taskId: existingTask.id,
+          },
+          { status: 409 }
+        );
+      }
+
+      const result = await createTaskFromQuestionnaire(questionnaireId);
+
       return Response.json(
         {
-          error: "Task already exists for this questionnaire",
-          taskId: existingTask.id,
+          success: true,
+          data: {
+            taskId: result.taskId,
+            status: result.status,
+            message:
+              "Task created. AI risk assessment is being processed in the background.",
+          },
         },
-        { status: 409 }
+        { status: 201 }
       );
     }
 
-    const result = await createTaskFromQuestionnaire(questionnaireId);
-
-    return Response.json(
-      {
-        success: true,
+    // If questionAnswerId provided, create task directly
+    if (questionAnswerId) {
+      const task = await prisma.task.create({
         data: {
-          taskId: result.taskId,
-          status: result.status,
-          message:
-            "Task created. AI risk assessment is being processed in the background.",
+          questionAnswerId,
+          status: "PENDING",
         },
-      },
-      { status: 201 }
-    );
+      });
+
+      return Response.json(
+        {
+          success: true,
+          data: {
+            taskId: task.id,
+            status: task.status,
+            message: "Task created.",
+          },
+        },
+        { status: 201 }
+      );
+    }
+
+    return Response.json({ error: "Invalid request" }, { status: 400 });
   } catch (error) {
     console.error("Error creating task:", error);
     const message = error instanceof Error ? error.message : "Internal server error";
@@ -96,9 +125,19 @@ export async function getTask(req: Request, id: string): Promise<Response> {
       return Response.json({ error: "Task not found" }, { status: 404 });
     }
 
+    // Return only specific fields
     return Response.json({
       success: true,
-      data: task,
+      data: {
+        id: task.id,
+        questionAnswerId: task.questionAnswerId,
+        status: task.status,
+        highRiskCount: task.highRiskCount,
+        mediumRiskCount: task.mediumRiskCount,
+        lowRiskCount: task.lowRiskCount,
+        assessmentSummary: task.assessmentSummary,
+        reportStatus: task.reportStatus,
+      },
     });
   } catch (error) {
     console.error("Error getting task:", error);
