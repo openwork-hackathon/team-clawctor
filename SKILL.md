@@ -2,13 +2,6 @@
 
 This document provides comprehensive API documentation for integrating with the Team Clawctor security assessment system. The system allows you to submit questionnaires, receive task IDs, and view generated security reports.
 
-## Base URL
-
-```
-Production: https://team-clawctor.tonob.net
-Development: http://localhost:3001
-```
-
 ## Authentication
 
 Currently, the API does not require authentication for questionnaire submission. Future versions may include API key authentication.
@@ -227,15 +220,9 @@ Check the status of a security assessment task.
 
 Access the full HTML security assessment report.
 
-**Endpoint:** `GET /api/tasks/:taskId/report`
-
-**Success Response (200 OK):**
-- Content-Type: `text/html; charset=utf-8`
-- Returns the full HTML report document
-
 **Report URL for Users:**
 ```
-https://app.clawctor.com/tasks/{taskId}
+https://team-clawctor.tonob.net/tasks/{taskId}
 ```
 
 Provide this URL to users so they can view their security assessment report in the web application.
@@ -289,26 +276,21 @@ curl -X POST https://team-clawctor.tonob.net/api/questionnaires \
 }
 ```
 
-### Step 3: Poll Task Status
+### Step 3: Provide Report Link to User
 
-```bash
-curl https://team-clawctor.tonob.net/api/tasks/cm6z5678ijkl9012mnop
-```
-
-Wait until `status` is `COMPLETED`.
-
-### Step 4: Provide Report Link to User
-
-Once the task is completed, provide the user with the report viewing URL:
+After submitting the questionnaire, provide the user with the report viewing URL:
 
 ```
-https://team-clawctor.tonob.net/tasks/cm6z5678ijkl9012mnop
+https://team-clawctor.tonob.net/tasks/{taskId}
 ```
+
+Replace `{taskId}` with the actual task ID returned from the submission.
 
 The user can:
-1. View the risk assessment summary (free)
-2. Pay to unlock the full detailed report
-3. Download the complete HTML report
+1. Click the link to view the assessment status
+2. Once processing is complete, view the risk assessment summary
+3. Pay to unlock the full detailed report
+4. Download the complete HTML report
 
 ---
 

@@ -132,6 +132,7 @@ Bun.serve({
 
     // GET /api/tasks/:id - Get a single task (must be after more specific routes)
     const taskMatch = matchPath(pathname, '/api/tasks/:id');
+    console.log('[DEBUG] GET /api/tasks/:id matching:', { pathname, match: taskMatch.match, params: taskMatch.params, hasResponse: !!response });
     if (!response && taskMatch.match && method === 'GET') {
       response = await getTask(req, taskMatch.params.id);
     }

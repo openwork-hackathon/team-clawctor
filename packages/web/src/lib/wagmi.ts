@@ -1,6 +1,6 @@
 import { http, createConfig } from 'wagmi';
 import { base } from 'wagmi/chains';
-import { injected, coinbaseWallet } from 'wagmi/connectors';
+import { coinbaseWallet } from 'wagmi/connectors';
 
 // AICC Token contract address on Base
 export const AICC_TOKEN_ADDRESS = '0x6F947b45C023Ef623b39331D0C4D21FBC51C1d45' as const;
@@ -15,9 +15,9 @@ export const AICC_TOKEN_DECIMALS = 18;
 export const config = createConfig({
   chains: [base],
   connectors: [
-    injected(),
     coinbaseWallet({
       appName: 'Clawctor AI Security',
+      preference: 'all',
     }),
   ],
   transports: {

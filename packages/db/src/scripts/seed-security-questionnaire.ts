@@ -317,7 +317,46 @@ async function seedQuestionnaire() {
   try {
     console.log('Starting security questionnaire generation...\n');
 
-    // Create questionnaire submission record
+    // Step 1: Create Question templates first
+    console.log('Step 1: Creating question templates...\n');
+    const questionMap = new Map<string, string>(); // questionCode -> questionId
+
+    for (const sectionData of securityQuestionnaire.sections) {
+      console.log(`  Creating questions for: ${sectionData.title}`);
+
+      for (let i = 0; i < sectionData.questions.length; i++) {
+        const questionText = sectionData.questions[i];
+        const questionCode = `${sectionData.order}.${i + 1}`;
+
+        // Check if question already exists
+        const existingQuestion = await prisma.question.findUnique({
+          where: { questionCode }
+        });
+
+        if (existingQuestion) {
+          questionMap.set(questionCode, existingQuestion.id);
+          console.log(`    ↻ Question ${questionCode} already exists`);
+        } else {
+          const question = await prisma.question.create({
+            data: {
+              questionCode,
+              sectionKey: sectionData.sectionKey,
+              questionText,
+              questionType: 'TEXTAREA',
+              required: true,
+              order: i + 1,
+              isActive: true,
+            }
+          });
+          questionMap.set(questionCode, question.id);
+          console.log(`    ✓ Created question ${questionCode}`);
+        }
+      }
+      console.log(`    → Created/found ${sectionData.questions.length} questions\n`);
+    }
+
+    // Step 2: Create questionnaire submission record
+    console.log('Step 2: Creating questionnaire submission...\n');
     const submission = await prisma.questionnaireSubmission.create({
       data: {
         source: securityQuestionnaire.source,
@@ -326,9 +365,10 @@ async function seedQuestionnaire() {
       }
     });
 
-    console.log(`✓ Created questionnaire submission: ${submission.id}`);
+    console.log(`✓ Created questionnaire submission: ${submission.id}\n`);
 
-    // Create sections and questions
+    // Step 3: Create sections and answers
+    console.log('Step 3: Creating sections and answers...\n');
     for (const sectionData of securityQuestionnaire.sections) {
       const section = await prisma.questionnaireSection.create({
         data: {
@@ -344,14 +384,15 @@ async function seedQuestionnaire() {
 
       // Create answer records for each question (initially empty)
       for (let i = 0; i < sectionData.questions.length; i++) {
-        const question = sectionData.questions[i];
         const questionCode = `${sectionData.order}.${i + 1}`;
+        const questionId = questionMap.get(questionCode);
 
         await prisma.questionnaireAnswer.create({
           data: {
             sectionId: section.id,
-            questionCode,
-            questionText: question,
+            questionId: questionId, // Link to Question template
+            questionCode, // Keep for backward compatibility
+            questionText: sectionData.questions[i], // Keep for backward compatibility
             order: i + 1,
             status: 'ANSWERED',
             answerText: null, // Initially empty, waiting to be filled
@@ -359,7 +400,7 @@ async function seedQuestionnaire() {
         });
       }
 
-      console.log(`    → Created ${sectionData.questions.length} questions\n`);
+      console.log(`    → Created ${sectionData.questions.length} answer records\n`);
     }
 
     console.log('━'.repeat(60));
