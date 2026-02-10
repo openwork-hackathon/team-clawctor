@@ -71,7 +71,7 @@ function PaymentStatusIndicator({ status, txHash }: { status: PaymentStatus; txH
 }
 
 function ConnectWalletSection() {
-  const { connect, connectors, isPending } = useConnect();
+  const { connect, connectors, isPending, error } = useConnect();
 
   return (
     <div className="flex flex-col gap-3">
@@ -98,6 +98,9 @@ function ConnectWalletSection() {
           )}
         </button>
       ))}
+      {error && (
+        <p className="text-sm text-red-500 text-center">{error.message}</p>
+      )}
     </div>
   );
 }

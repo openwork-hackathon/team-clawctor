@@ -1,10 +1,9 @@
 interface TaskHeaderProps {
   auditId: string;
-  createdDate: string;
   title: string;
 }
 
-export function TaskHeader({ auditId, createdDate, title }: TaskHeaderProps) {
+export function TaskHeader({ auditId, title }: TaskHeaderProps) {
   return (
     <div className="flex flex-wrap justify-between items-end gap-4 mb-8">
       <div className="flex flex-col gap-2">
