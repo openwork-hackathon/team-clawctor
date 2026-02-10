@@ -18,7 +18,6 @@ interface QuestionnaireSection {
 
 interface QuestionnaireData {
   id: string;
-  companyName: string;
   sections: QuestionnaireSection[];
 }
 
@@ -33,19 +32,19 @@ interface RiskAssessmentResult {
 
 // Format questionnaire data for AI prompt
 function formatQuestionnaireForAI(data: QuestionnaireData): string {
-  let formatted = `Company: ${data.companyName}\n\n`;
-  
+  let formatted = '';
+
   for (const section of data.sections) {
     formatted += `## ${section.title}\n\n`;
-    
+
     for (const answer of section.answers) {
-      const answerValue = answer.answerText || 
+      const answerValue = answer.answerText ||
         (answer.answerJson ? JSON.stringify(answer.answerJson) : "No answer provided");
       formatted += `**${answer.questionCode}**: ${answer.questionText}\n`;
       formatted += `Answer: ${answerValue}\n\n`;
     }
   }
-  
+
   return formatted;
 }
 
@@ -83,7 +82,7 @@ ${formattedData}`;
 
   try {
     const { text } = await generateText({
-      model: google("gemini-1.5-flash"),
+      model: google("gemini-2.5-flash"),
       system: systemPrompt,
       prompt: userPrompt,
     });
@@ -109,7 +108,7 @@ ${formattedData}`;
   }
 }
 
-// Create a task from questionnaire submission with AI assessment
+// Create a task from questionnaire answer with AI assessment
 export async function createTaskFromQuestionnaire(
   questionnaireId: string
 ): Promise<{ taskId: string; status: TaskStatus }> {
@@ -132,11 +131,16 @@ export async function createTaskFromQuestionnaire(
     throw new Error(`Questionnaire not found: ${questionnaireId}`);
   }
 
-  // Create the task in PENDING status first
+  // Get the first answer to link the task
+  const firstAnswer = questionnaire.sections[0]?.answers[0];
+  if (!firstAnswer) {
+    throw new Error(`No answers found in questionnaire: ${questionnaireId}`);
+  }
+
+  // Create the task in PENDING status first, linked to the first answer
   const task = await prisma.task.create({
     data: {
-      questionnaireId: questionnaire.id,
-      companyName: questionnaire.companyName,
+      questionAnswerId: firstAnswer.id,
       status: TaskStatus.PENDING,
     },
   });
@@ -157,7 +161,6 @@ async function processAIAssessment(
   taskId: string,
   questionnaire: {
     id: string;
-    companyName: string;
     sections: {
       sectionKey: string;
       title: string;
@@ -180,7 +183,6 @@ async function processAIAssessment(
     // Perform AI risk assessment
     const assessment = await assessQuestionnaireRisk({
       id: questionnaire.id,
-      companyName: questionnaire.companyName,
       sections: questionnaire.sections.map((section) => ({
         sectionKey: section.sectionKey,
         title: section.title,
@@ -239,11 +241,38 @@ export async function getTaskById(taskId: string) {
   });
 }
 
-// Get task by questionnaire ID
+// Get task by questionnaire ID (finds task by any answer in the questionnaire)
 export async function getTaskByQuestionnaireId(questionnaireId: string) {
-  return prisma.task.findUnique({
-    where: { questionnaireId },
+  // Get all answers for this questionnaire
+  const questionnaire = await prisma.questionnaireSubmission.findUnique({
+    where: { id: questionnaireId },
+    include: {
+      sections: {
+        include: {
+          answers: {
+            include: {
+              tasks: true,
+            },
+          },
+        },
+      },
+    },
   });
+
+  if (!questionnaire) {
+    return null;
+  }
+
+  // Find the first task among all answers
+  for (const section of questionnaire.sections) {
+    for (const answer of section.answers) {
+      if (answer.tasks && answer.tasks.length > 0) {
+        return answer.tasks[0];
+      }
+    }
+  }
+
+  return null;
 }
 
 // List all tasks with pagination

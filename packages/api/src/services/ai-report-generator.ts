@@ -44,7 +44,6 @@ export interface DetailedAssessment {
 
 export interface TaskData {
   id: string;
-  companyName: string;
   highRiskCount: number;
   mediumRiskCount: number;
   lowRiskCount: number;
@@ -158,7 +157,6 @@ Respond ONLY with valid JSON in this exact format:
 
   const userPrompt = `Generate a detailed security health check report for:
 
-Company: ${task.companyName}
 High Risk Issues: ${task.highRiskCount}
 Medium Risk Issues: ${task.mediumRiskCount}
 Low Risk Issues: ${task.lowRiskCount}
@@ -169,7 +167,7 @@ ${assessmentData?.risks ? `Identified Risks:\n${JSON.stringify(assessmentData.ri
 Please generate a comprehensive security report with detailed findings, scores, and remediation recommendations.`;
 
   const { text } = await generateText({
-    model: google("gemini-1.5-flash"),
+    model: google("gemini-2.5-flash"),
     system: systemPrompt,
     prompt: userPrompt,
   });

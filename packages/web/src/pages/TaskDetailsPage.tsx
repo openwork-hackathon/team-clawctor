@@ -191,7 +191,7 @@ export function TaskDetailsPage() {
           <TaskHeader
             auditId={generateAuditId(task.id)}
             createdDate={formatDate(task.createdAt)}
-            title={`AI Security Audit: ${task.companyName}`}
+            title="AI Security Audit"
           />
           <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 bg-[#1a2632] rounded-xl p-8 mt-6">
             <div className="animate-pulse flex flex-col items-center gap-4">
@@ -221,7 +221,7 @@ export function TaskDetailsPage() {
           <TaskHeader
             auditId={generateAuditId(task.id)}
             createdDate={formatDate(task.createdAt)}
-            title={`AI Security Audit: ${task.companyName}`}
+            title="AI Security Audit"
           />
           <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 bg-[#1a2632] rounded-xl p-8 mt-6">
             <span className="material-symbols-outlined text-5xl text-red-500">warning</span>
@@ -249,7 +249,7 @@ export function TaskDetailsPage() {
           <TaskHeader
             auditId={generateAuditId(task.id)}
             createdDate={formatDate(task.createdAt)}
-            title={`AI Security Audit: ${task.companyName}`}
+            title="AI Security Audit"
           />
           <RiskSummaryRow data={{
             high: { count: task.highRiskCount, description: 'Immediate action required' },
@@ -276,7 +276,7 @@ export function TaskDetailsPage() {
           <TaskHeader
             auditId={generateAuditId(task.id)}
             createdDate={formatDate(task.createdAt)}
-            title={`AI Security Audit: ${task.companyName}`}
+            title="AI Security Audit"
           />
           <RiskSummaryRow data={{
             high: { count: task.highRiskCount, description: 'Immediate action required' },
@@ -284,8 +284,7 @@ export function TaskDetailsPage() {
             low: { count: task.lowRiskCount, description: 'Optimization suggested' },
           }} />
           <div className="mt-6">
-            <ReportGeneratingLoader 
-              companyName={task.companyName}
+            <ReportGeneratingLoader
               onComplete={() => {
                 setViewMode('report');
                 refetch();
@@ -305,7 +304,7 @@ export function TaskDetailsPage() {
           <TaskHeader
             auditId={generateAuditId(task.id)}
             createdDate={formatDate(task.createdAt)}
-            title={`AI Security Audit: ${task.companyName}`}
+            title="AI Security Audit"
           />
           <RiskSummaryRow data={{
             high: { count: task.highRiskCount, description: 'Immediate action required' },

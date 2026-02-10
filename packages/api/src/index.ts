@@ -3,6 +3,7 @@ import {
   submitQuestionnaire,
   listQuestionnaires,
   getQuestionnaire,
+  getLatestQuestionnaire,
   updateQuestionnaireStatus
 } from './routes/questionnaires';
 import {
@@ -61,6 +62,11 @@ Bun.serve({
     }
 
     // Questionnaire routes
+    // GET /api/latest_questionnaires - Get the latest questionnaire (must be before /api/questionnaires GET)
+    if (!response && pathname === '/api/latest_questionnaires' && method === 'GET') {
+      response = await getLatestQuestionnaire(req);
+    }
+
     // POST /api/questionnaires - Submit a new questionnaire
     if (!response && pathname === '/api/questionnaires' && method === 'POST') {
       response = await submitQuestionnaire(req);

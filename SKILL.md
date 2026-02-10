@@ -5,7 +5,7 @@ This document provides comprehensive API documentation for integrating with the 
 ## Base URL
 
 ```
-Production: https://api.clawctor.com
+Production: https://team-clawctor.tonob.net
 Development: http://localhost:3001
 ```
 
@@ -19,26 +19,34 @@ Currently, the API does not require authentication for questionnaire submission.
 
 ### 1. Get Questionnaire Template
 
-Retrieve the questionnaire template structure before submission.
+Retrieve the latest questionnaire template structure before submission.
 
-**Endpoint:** `GET /api/questionnaires/template`
+**Endpoint:** `GET /api/latest_questionnaires`
 
 **Response:**
 ```json
 {
   "success": true,
   "data": {
+    "id": "cmlg8sbzo0000bpqt1m35rptg",
     "sections": [
       {
-        "sectionKey": "company_info",
+        "id": "cm6z1234abcd5678efgh",
         "title": "Company Information",
         "icon": "building",
+        "order": 0,
         "questions": [
           {
+            "id": "cm6q1234abcd5678wxyz",
             "questionCode": "CI_001",
             "questionText": "What is your company name?",
-            "type": "text",
-            "required": true
+            "order": 0
+          },
+          {
+            "id": "cm6q2345bcde6789xyza",
+            "questionCode": "CI_002",
+            "questionText": "What is your company size?",
+            "order": 1
           }
         ]
       }
@@ -47,11 +55,13 @@ Retrieve the questionnaire template structure before submission.
 }
 ```
 
+**Note:** Each question in the template has a unique `id` and section has a unique `id` that you must reference when submitting answers.
+
 ---
 
-### 2. Submit Questionnaire
+### 2. Submit Questionnaire Answers
 
-Submit a completed questionnaire for security assessment.
+Submit answers to the questionnaire for security assessment.
 
 **Endpoint:** `POST /api/questionnaires`
 
@@ -63,79 +73,53 @@ Content-Type: application/json
 **Request Body:**
 ```json
 {
-  "companyName": "Acme Corporation",
-  "organizationId": "org_12345",
+  "questionnaireId": "cmlg8sbzo0000bpqt1m35rptg",
   "submitterEmail": "security@acme.com",
   "submitterName": "John Doe",
   "source": "web_portal",
-  "sections": [
+  "answers": [
     {
-      "sectionKey": "company_info",
-      "title": "Company Information",
-      "icon": "building",
-      "answers": [
-        {
-          "questionCode": "CI_001",
-          "questionText": "What is your company name?",
-          "answerText": "Acme Corporation"
-        },
-        {
-          "questionCode": "CI_002",
-          "questionText": "Company size",
-          "answerJson": {
-            "employees": "100-500",
-            "locations": ["US", "EU"]
-          }
-        }
-      ]
+      "sectionId": "cm6z1234abcd5678efgh",
+      "questionId": "cm6q1234abcd5678wxyz",
+      "answerText": "Acme Corporation"
     },
     {
-      "sectionKey": "security_practices",
-      "title": "Security Practices",
-      "icon": "shield",
-      "answers": [
-        {
-          "questionCode": "SP_001",
-          "questionText": "Do you have a security policy?",
-          "answerText": "Yes",
-          "attachments": [
-            {
-              "fileName": "security_policy.pdf",
-              "fileType": "application/pdf",
-              "fileSize": 102400,
-              "fileUrl": "https://storage.example.com/files/security_policy.pdf",
-              "description": "Company security policy document"
-            }
-          ]
-        }
-      ]
+      "sectionId": "cm6z1234abcd5678efgh",
+      "questionId": "cm6q2345bcde6789xyza",
+      "answerText": "50-100 employees"
+    },
+    {
+      "sectionId": "cm6z5678ijkl9012mnop",
+      "questionId": "cm6q3456cdef7890abcd",
+      "answerText": "Yes, we have a comprehensive security policy"
     }
   ]
 }
 ```
 
+**Important Notes:**
+- The `questionnaireId` field is **required** - Get it from the latest questionnaire template endpoint (GET /api/latest_questionnaires)
+- The `sectionId` field is **required** and must match a valid section ID from the questionnaire template
+- The `questionId` field is **required** and must match a valid question ID from the questionnaire template
+- The API validates that all referenced section and question IDs belong to the specified questionnaire
+
 **Required Fields:**
 | Field | Type | Description |
 |-------|------|-------------|
-| `companyName` | string | Name of the company being assessed |
-| `sections` | array | Array of section objects containing answers |
-| `sections[].sectionKey` | string | Unique identifier for the section |
-| `sections[].title` | string | Display title of the section |
-| `sections[].answers` | array | Array of answer objects |
-| `sections[].answers[].questionCode` | string | Unique code for the question |
-| `sections[].answers[].questionText` | string | The question text |
+| `questionnaireId` | string | **Required** - Questionnaire template ID from GET /api/latest_questionnaires |
+| `answers` | array | Array of answer objects |
+| `answers[].sectionId` | string | **Required** - Section ID from the template |
+| `answers[].questionId` | string | **Required** - Question ID from the template |
 
 **Optional Fields:**
 | Field | Type | Description |
 |-------|------|-------------|
-| `organizationId` | string | External organization identifier |
 | `submitterEmail` | string | Email of the person submitting |
 | `submitterName` | string | Name of the person submitting |
 | `source` | string | Source of submission (default: "web_portal") |
-| `sections[].icon` | string | Icon identifier for the section |
-| `sections[].answers[].answerText` | string | Text answer |
-| `sections[].answers[].answerJson` | object | Structured JSON answer |
-| `sections[].answers[].attachments` | array | File attachments |
+| `answers[].answerText` | string | Text answer |
+| `answers[].answerJson` | object | Structured JSON answer |
+| `answers[].attachments` | array | File attachments |
 
 **Success Response (201 Created):**
 ```json
@@ -143,10 +127,8 @@ Content-Type: application/json
   "success": true,
   "data": {
     "id": "cm6z1234abcd5678efgh",
-    "assetHash": "a1b2c3d4e5f6...",
     "status": "SUBMITTED",
     "submittedAt": "2026-02-09T17:00:00.000Z",
-    "companyName": "Acme Corporation",
     "sectionsCount": 2,
     "totalQuestions": 3,
     "task": {
@@ -158,13 +140,38 @@ Content-Type: application/json
 ```
 
 **Error Response (400 Bad Request):**
+
+Validation errors:
 ```json
 {
   "error": "Validation failed",
   "details": [
-    "companyName is required and must be a string",
-    "sections[0].sectionKey is required"
+    "questionnaireId is required",
+    "answers[0].sectionId is required",
+    "answers[0].questionId is required"
   ]
+}
+```
+
+Invalid section or question IDs:
+```json
+{
+  "error": "Invalid section IDs",
+  "details": "The following section IDs do not belong to this questionnaire: cm6z999invalid"
+}
+```
+
+```json
+{
+  "error": "Invalid question IDs",
+  "details": "The following question IDs do not belong to this questionnaire: cm6q999invalid"
+}
+```
+
+Questionnaire not found:
+```json
+{
+  "error": "Questionnaire template not found"
 }
 ```
 
@@ -187,26 +194,24 @@ Check the status of a security assessment task.
   "success": true,
   "data": {
     "id": "cm6z5678ijkl9012mnop",
-    "questionnaireId": "cm6z1234abcd5678efgh",
+    "questionAnswerId": "cm6z9999abcd1234wxyz",
     "status": "COMPLETED",
-    "riskScore": 72,
-    "riskLevel": "MEDIUM",
-    "confidenceScore": 85,
-    "summary": "The organization demonstrates moderate security practices...",
-    "findings": [
-      {
-        "category": "Access Control",
-        "severity": "HIGH",
-        "description": "Multi-factor authentication not enforced",
-        "recommendation": "Implement MFA for all user accounts"
-      }
-    ],
-    "reportStatus": "PENDING",
-    "createdAt": "2026-02-09T17:00:00.000Z",
-    "completedAt": "2026-02-09T17:05:00.000Z"
+    "highRiskCount": 2,
+    "mediumRiskCount": 5,
+    "lowRiskCount": 8,
+    "assessmentSummary": "The organization demonstrates moderate security practices with some areas requiring immediate attention...",
+    "reportStatus": "NOT_STARTED"
   }
 }
 ```
+
+**Risk Assessment Fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `highRiskCount` | number | Number of high-risk findings |
+| `mediumRiskCount` | number | Number of medium-risk findings |
+| `lowRiskCount` | number | Number of low-risk findings |
+| `assessmentSummary` | string | Brief summary from AI assessment |
 
 **Task Status Values:**
 | Status | Description |
@@ -218,37 +223,7 @@ Check the status of a security assessment task.
 
 ---
 
-### 4. Get Report Status
-
-Check if the detailed report is ready.
-
-**Endpoint:** `GET /api/tasks/:taskId/report-status`
-
-**Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "data": {
-    "taskId": "cm6z5678ijkl9012mnop",
-    "reportStatus": "COMPLETED",
-    "reportGeneratedAt": "2026-02-09T17:10:00.000Z",
-    "reportError": null,
-    "hasReport": true
-  }
-}
-```
-
-**Report Status Values:**
-| Status | Description |
-|--------|-------------|
-| `PENDING` | Report not yet requested |
-| `GENERATING` | Report is being generated |
-| `COMPLETED` | Report is ready to view |
-| `FAILED` | Report generation failed |
-
----
-
-### 5. View Report
+### 4. View Report
 
 Access the full HTML security assessment report.
 
@@ -267,55 +242,32 @@ Provide this URL to users so they can view their security assessment report in t
 
 ---
 
-### 6. Record Payment and Generate Report
-
-Submit payment confirmation to unlock the full report.
-
-**Endpoint:** `POST /api/tasks/:taskId/payment`
-
-**Request Body:**
-```json
-{
-  "txHash": "0x1234567890abcdef...",
-  "amount": 100
-}
-```
-
-**Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "data": {
-    "taskId": "cm6z5678ijkl9012mnop",
-    "reportStatus": "GENERATING",
-    "message": "Payment recorded. Report generation started."
-  }
-}
-```
-
----
-
 ## Complete Integration Flow
 
-### Step 1: Submit Questionnaire
+### Step 1: Get Latest Questionnaire Template
+
+First, retrieve the latest questionnaire template to get the questionnaire ID, section IDs, and question IDs:
 
 ```bash
-curl -X POST https://api.clawctor.com/api/questionnaires \
+curl https://team-clawctor.tonob.net/api/latest_questionnaires
+```
+
+This returns the complete questionnaire structure with the questionnaire ID and all section IDs and question IDs you need to reference when submitting answers.
+
+### Step 2: Submit Questionnaire Answers
+
+```bash
+curl -X POST https://team-clawctor.tonob.net/api/questionnaires \
   -H "Content-Type: application/json" \
   -d '{
-    "companyName": "Acme Corporation",
+    "questionnaireId": "cmlg8sbzo0000bpqt1m35rptg",
     "submitterEmail": "security@acme.com",
-    "sections": [
+    "submitterName": "John Doe",
+    "answers": [
       {
-        "sectionKey": "security_basics",
-        "title": "Security Basics",
-        "answers": [
-          {
-            "questionCode": "SB_001",
-            "questionText": "Do you have a security policy?",
-            "answerText": "Yes, we have a comprehensive security policy"
-          }
-        ]
+        "sectionId": "cm6z1234abcd5678efgh",
+        "questionId": "cm6q1234abcd5678wxyz",
+        "answerText": "Yes, we have a comprehensive security policy"
       }
     ]
   }'
@@ -326,7 +278,9 @@ curl -X POST https://api.clawctor.com/api/questionnaires \
 {
   "success": true,
   "data": {
-    "id": "cm6z1234abcd5678efgh",
+    "id": "cmlg8sbzo0000bpqt1m35rptg",
+    "assetHash": "a1b2c3d4e5f6...",
+    "status": "SUBMITTED",
     "task": {
       "taskId": "cm6z5678ijkl9012mnop",
       "status": "PROCESSING"
@@ -335,20 +289,20 @@ curl -X POST https://api.clawctor.com/api/questionnaires \
 }
 ```
 
-### Step 2: Poll Task Status
+### Step 3: Poll Task Status
 
 ```bash
-curl https://api.clawctor.com/api/tasks/cm6z5678ijkl9012mnop
+curl https://team-clawctor.tonob.net/api/tasks/cm6z5678ijkl9012mnop
 ```
 
 Wait until `status` is `COMPLETED`.
 
-### Step 3: Provide Report Link to User
+### Step 4: Provide Report Link to User
 
 Once the task is completed, provide the user with the report viewing URL:
 
 ```
-https://app.clawctor.com/tasks/cm6z5678ijkl9012mnop
+https://team-clawctor.tonob.net/tasks/cm6z5678ijkl9012mnop
 ```
 
 The user can:
@@ -389,181 +343,6 @@ The user can:
 | POST /api/questionnaires | 10 requests per minute |
 | GET /api/tasks/* | 60 requests per minute |
 | POST /api/tasks/*/payment | 5 requests per minute |
-
----
-
-## Webhooks (Coming Soon)
-
-Configure webhooks to receive notifications when:
-- Task analysis is completed
-- Report is generated
-- Payment is confirmed
-
----
-
-## SDK Examples
-
-### JavaScript/TypeScript
-
-```typescript
-interface QuestionnaireSubmission {
-  companyName: string;
-  submitterEmail?: string;
-  sections: Section[];
-}
-
-interface Section {
-  sectionKey: string;
-  title: string;
-  answers: Answer[];
-}
-
-interface Answer {
-  questionCode: string;
-  questionText: string;
-  answerText?: string;
-  answerJson?: Record<string, unknown>;
-}
-
-async function submitQuestionnaire(data: QuestionnaireSubmission) {
-  const response = await fetch('https://api.clawctor.com/api/questionnaires', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  
-  if (!response.ok) {
-    throw new Error(`Submission failed: ${response.statusText}`);
-  }
-  
-  return response.json();
-}
-
-async function getTaskStatus(taskId: string) {
-  const response = await fetch(`https://api.clawctor.com/api/tasks/${taskId}`);
-  return response.json();
-}
-
-async function pollUntilComplete(taskId: string, maxAttempts = 30) {
-  for (let i = 0; i < maxAttempts; i++) {
-    const result = await getTaskStatus(taskId);
-    
-    if (result.data.status === 'COMPLETED') {
-      return result.data;
-    }
-    
-    if (result.data.status === 'FAILED') {
-      throw new Error('Task processing failed');
-    }
-    
-    await new Promise(resolve => setTimeout(resolve, 2000));
-  }
-  
-  throw new Error('Timeout waiting for task completion');
-}
-
-// Usage
-async function main() {
-  const submission = await submitQuestionnaire({
-    companyName: 'Acme Corp',
-    submitterEmail: 'security@acme.com',
-    sections: [
-      {
-        sectionKey: 'security',
-        title: 'Security Assessment',
-        answers: [
-          {
-            questionCode: 'Q1',
-            questionText: 'Do you have MFA enabled?',
-            answerText: 'Yes, for all employees',
-          },
-        ],
-      },
-    ],
-  });
-  
-  console.log('Questionnaire submitted:', submission.data.id);
-  console.log('Task ID:', submission.data.task.taskId);
-  
-  // Poll for completion
-  const task = await pollUntilComplete(submission.data.task.taskId);
-  
-  console.log('Risk Score:', task.riskScore);
-  console.log('Risk Level:', task.riskLevel);
-  
-  // Provide report link to user
-  const reportUrl = `https://app.clawctor.com/tasks/${task.id}`;
-  console.log('View Report:', reportUrl);
-}
-```
-
-### Python
-
-```python
-import requests
-import time
-
-BASE_URL = "https://api.clawctor.com"
-
-def submit_questionnaire(data: dict) -> dict:
-    response = requests.post(
-        f"{BASE_URL}/api/questionnaires",
-        json=data,
-        headers={"Content-Type": "application/json"}
-    )
-    response.raise_for_status()
-    return response.json()
-
-def get_task_status(task_id: str) -> dict:
-    response = requests.get(f"{BASE_URL}/api/tasks/{task_id}")
-    response.raise_for_status()
-    return response.json()
-
-def poll_until_complete(task_id: str, max_attempts: int = 30) -> dict:
-    for _ in range(max_attempts):
-        result = get_task_status(task_id)
-        status = result["data"]["status"]
-        
-        if status == "COMPLETED":
-            return result["data"]
-        
-        if status == "FAILED":
-            raise Exception("Task processing failed")
-        
-        time.sleep(2)
-    
-    raise Exception("Timeout waiting for task completion")
-
-# Usage
-if __name__ == "__main__":
-    submission = submit_questionnaire({
-        "companyName": "Acme Corp",
-        "submitterEmail": "security@acme.com",
-        "sections": [
-            {
-                "sectionKey": "security",
-                "title": "Security Assessment",
-                "answers": [
-                    {
-                        "questionCode": "Q1",
-                        "questionText": "Do you have MFA enabled?",
-                        "answerText": "Yes, for all employees"
-                    }
-                ]
-            }
-        ]
-    })
-    
-    task_id = submission["data"]["task"]["taskId"]
-    print(f"Task ID: {task_id}")
-    
-    task = poll_until_complete(task_id)
-    print(f"Risk Score: {task['riskScore']}")
-    print(f"Risk Level: {task['riskLevel']}")
-    
-    report_url = f"https://app.clawctor.com/tasks/{task['id']}"
-    print(f"View Report: {report_url}")
-```
 
 ---
 

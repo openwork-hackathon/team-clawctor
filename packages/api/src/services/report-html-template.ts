@@ -164,7 +164,7 @@ export function generateReportHTML(task: TaskData, assessment: DetailedAssessmen
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Security Health Check Report - ${escapeHtml(task.companyName)}</title>
+  <title>Security Health Check Report</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -229,7 +229,7 @@ export function generateReportHTML(task: TaskData, assessment: DetailedAssessmen
         <div class="flex flex-wrap justify-between items-end gap-6 mb-10">
           <div class="flex flex-col gap-2">
             <h1 class="text-[#111418] dark:text-white text-4xl font-extrabold leading-tight tracking-tight">Security Health Check Report</h1>
-            <p class="text-[#617589] dark:text-gray-400 text-base max-w-2xl font-medium">Detailed security posture assessment for ${escapeHtml(task.companyName)} - Generated on ${reportDate}</p>
+            <p class="text-[#617589] dark:text-gray-400 text-base max-w-2xl font-medium">Detailed security posture assessment - Generated on ${reportDate}</p>
           </div>
         </div>
 

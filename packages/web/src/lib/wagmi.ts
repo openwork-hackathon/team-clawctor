@@ -3,10 +3,10 @@ import { base } from 'wagmi/chains';
 import { injected, coinbaseWallet } from 'wagmi/connectors';
 
 // AICC Token contract address on Base
-export const AICC_TOKEN_ADDRESS = '0x919e2E7B0E6F1F2f0f0A0a0a0a0a0a0a0a0a0a0a' as const; // TODO: Replace with actual AICC token address
+export const AICC_TOKEN_ADDRESS = '0x6F947b45C023Ef623b39331D0C4D21FBC51C1d45' as const;
 
 // Payment receiver address
-export const PAYMENT_RECEIVER_ADDRESS = '0x1234567890123456789012345678901234567890' as const; // TODO: Replace with actual receiver address
+export const PAYMENT_RECEIVER_ADDRESS = '0xA53C3d0d430c8b87E1b56f5E369fB5b31Dc3102e' as const;
 
 // AICC Token decimals (standard ERC20 is 18)
 export const AICC_TOKEN_DECIMALS = 18;
