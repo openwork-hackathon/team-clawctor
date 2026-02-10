@@ -11,7 +11,7 @@ interface ReportStats {
 interface UnlockOverlayProps {
   tokenCost: number;
   stats: ReportStats;
-  onUnlockSuccess?: () => void;
+  onUnlockSuccess?: (txHash: `0x${string}`) => void;
   onTopUp?: () => void;
 }
 
@@ -134,10 +134,10 @@ export function UnlockOverlay({
   };
 
   // Handle successful payment
-  if (paymentStatus === 'success') {
+  if (paymentStatus === 'success' && txHash) {
     // Auto-trigger unlock success after a short delay
     setTimeout(() => {
-      onUnlockSuccess?.();
+      onUnlockSuccess?.(txHash);
     }, 2000);
   }
 
