@@ -21,7 +21,7 @@ export const SkillInstallSection: FC = () => {
   return (
     <section
       className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-background-dark"
-      id="install-skill"
+      id="docs"
     >
       <div className="max-w-[1000px] mx-auto px-6">
         <div className="text-center mb-12">

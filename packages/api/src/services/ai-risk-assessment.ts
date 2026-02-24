@@ -108,45 +108,73 @@ ${formattedData}`;
   }
 }
 
+// Answer input from the API request
+interface AnswerInput {
+  sectionId: string;
+  questionId?: string;
+  answerText?: string;
+  answerJson?: unknown;
+}
+
 // Create a task from questionnaire answer with AI assessment
 export async function createTaskFromQuestionnaire(
-  questionnaireId: string
+  questionnaireId: string,
+  answers: AnswerInput[]
 ): Promise<{ taskId: string; status: TaskStatus }> {
-  // Fetch the questionnaire with all sections and answers
-  const questionnaire = await prisma.questionnaireSubmission.findUnique({
-    where: { id: questionnaireId },
-    include: {
-      sections: {
-        orderBy: { order: "asc" },
-        include: {
-          answers: {
-            orderBy: { order: "asc" },
-          },
-        },
-      },
-    },
-  });
-
-  if (!questionnaire) {
-    throw new Error(`Questionnaire not found: ${questionnaireId}`);
-  }
-
-  // Get the first answer to link the task
-  const firstAnswer = questionnaire.sections[0]?.answers[0];
-  if (!firstAnswer) {
-    throw new Error(`No answers found in questionnaire: ${questionnaireId}`);
-  }
-
-  // Create the task in PENDING status first, linked to the first answer
+  // Create the task first
   const task = await prisma.task.create({
     data: {
-      questionAnswerId: firstAnswer.id,
       status: TaskStatus.PENDING,
     },
   });
 
+  // Create QuestionnaireAnswer records linked to this task
+  await prisma.questionnaireAnswer.createMany({
+    data: answers.map((a) => ({
+      sectionId: a.sectionId,
+      questionId: a.questionId,
+      answerText: a.answerText,
+      answerJson: a.answerJson ?? undefined,
+      taskId: task.id,
+    })),
+  });
+
+  // Fetch created answers with section info for AI assessment
+  const createdAnswers = await prisma.questionnaireAnswer.findMany({
+    where: { taskId: task.id },
+    include: { section: true, question: true },
+  });
+
+  // Group answers by section for AI assessment
+  const sectionMap = new Map<string, { sectionKey: string; title: string; answers: typeof createdAnswers }>();
+  for (const answer of createdAnswers) {
+    const key = answer.section.sectionKey;
+    if (!sectionMap.has(key)) {
+      sectionMap.set(key, {
+        sectionKey: answer.section.sectionKey,
+        title: answer.section.title,
+        answers: [],
+      });
+    }
+    sectionMap.get(key)!.answers.push(answer);
+  }
+
+  const questionnaireData: QuestionnaireData = {
+    id: questionnaireId,
+    sections: Array.from(sectionMap.values()).map((s) => ({
+      sectionKey: s.sectionKey,
+      title: s.title,
+      answers: s.answers.map((a) => ({
+        questionCode: a.question?.questionCode ?? "",
+        questionText: a.question?.questionText ?? a.answerText ?? "",
+        answerText: a.answerText,
+        answerJson: a.answerJson,
+      })),
+    })),
+  };
+
   // Process AI assessment asynchronously
-  processAIAssessment(task.id, questionnaire).catch((error) => {
+  processAIAssessment(task.id, questionnaireData).catch((error) => {
     console.error(`Failed to process AI assessment for task ${task.id}:`, error);
   });
 
@@ -159,19 +187,7 @@ export async function createTaskFromQuestionnaire(
 // Process AI assessment (can be called asynchronously)
 async function processAIAssessment(
   taskId: string,
-  questionnaire: {
-    id: string;
-    sections: {
-      sectionKey: string;
-      title: string;
-      answers: {
-        questionCode: string;
-        questionText: string;
-        answerText: string | null;
-        answerJson: unknown;
-      }[];
-    }[];
-  }
+  questionnaireData: QuestionnaireData
 ): Promise<void> {
   try {
     // Update task to PROCESSING
@@ -181,19 +197,7 @@ async function processAIAssessment(
     });
 
     // Perform AI risk assessment
-    const assessment = await assessQuestionnaireRisk({
-      id: questionnaire.id,
-      sections: questionnaire.sections.map((section) => ({
-        sectionKey: section.sectionKey,
-        title: section.title,
-        answers: section.answers.map((answer) => ({
-          questionCode: answer.questionCode,
-          questionText: answer.questionText,
-          answerText: answer.answerText,
-          answerJson: answer.answerJson,
-        })),
-      })),
-    });
+    const assessment = await assessQuestionnaireRisk(questionnaireData);
 
     // Update task with assessment results
     await prisma.task.update({
@@ -212,7 +216,7 @@ async function processAIAssessment(
 
     // Update questionnaire status to EVALUATED
     await prisma.questionnaireSubmission.update({
-      where: { id: questionnaire.id },
+      where: { id: questionnaireData.id },
       data: { status: "EVALUATED" },
     });
 
@@ -241,38 +245,22 @@ export async function getTaskById(taskId: string) {
   });
 }
 
-// Get task by questionnaire ID (finds task by any answer in the questionnaire)
+// Get task by questionnaire ID (finds task linked to any answer in the questionnaire)
 export async function getTaskByQuestionnaireId(questionnaireId: string) {
-  // Get all answers for this questionnaire
-  const questionnaire = await prisma.questionnaireSubmission.findUnique({
-    where: { id: questionnaireId },
-    include: {
-      sections: {
-        include: {
-          answers: {
-            include: {
-              tasks: true,
-            },
+  // Find a task that has answers belonging to this questionnaire
+  const task = await prisma.task.findFirst({
+    where: {
+      questionnaireAnswers: {
+        some: {
+          section: {
+            submissionId: questionnaireId,
           },
         },
       },
     },
   });
 
-  if (!questionnaire) {
-    return null;
-  }
-
-  // Find the first task among all answers
-  for (const section of questionnaire.sections) {
-    for (const answer of section.answers) {
-      if (answer.tasks && answer.tasks.length > 0) {
-        return answer.tasks[0];
-      }
-    }
-  }
-
-  return null;
+  return task;
 }
 
 // List all tasks with pagination

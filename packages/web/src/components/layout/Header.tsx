@@ -31,7 +31,7 @@ export const Header: FC<HeaderProps> = () => {
           </a>
           <a
             className="text-sm font-semibold hover:text-primary transition-colors"
-            href="#"
+            href="#docs"
           >
             Docs
           </a>

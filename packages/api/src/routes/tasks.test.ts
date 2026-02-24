@@ -28,7 +28,7 @@ mock.module("../services/ai-report-generator", () => ({
 }));
 
 describe("createTask", () => {
-  test("should return 400 if neither questionnaireId nor questionAnswerId provided", async () => {
+  test("should return 400 if questionnaireId not provided", async () => {
     const req = new Request("http://localhost/api/tasks", {
       method: "POST",
       body: JSON.stringify({}),
@@ -38,31 +38,25 @@ describe("createTask", () => {
     const data = await response.json();
 
     expect(response.status).toBe(400);
-    expect(data.error).toBe("Either questionnaireId or questionAnswerId is required");
+    expect(data.error).toBe("questionnaireId is required");
   });
 
-  test("should return 409 if task already exists for questionnaire", async () => {
-    const mockGetTaskByQuestionnaireId = aiService.getTaskByQuestionnaireId as any;
-    mockGetTaskByQuestionnaireId.mockResolvedValue({ id: "existing-task-id" });
-
+  test("should return 400 if answers not provided", async () => {
     const req = new Request("http://localhost/api/tasks", {
       method: "POST",
-      body: JSON.stringify({ questionnaireId: "test-questionnaire-id" }),
+      body: JSON.stringify({ questionnaireId: "test-id" }),
     });
 
     const response = await createTask(req);
     const data = await response.json();
 
-    expect(response.status).toBe(409);
-    expect(data.error).toBe("Task already exists for this questionnaire");
-    expect(data.taskId).toBe("existing-task-id");
+    expect(response.status).toBe(400);
+    expect(data.error).toBe("answers is required");
   });
 
-  test("should create task with questionnaireId", async () => {
-    const mockGetTaskByQuestionnaireId = aiService.getTaskByQuestionnaireId as any;
+  test("should create task with questionnaireId and answers", async () => {
     const mockCreateTaskFromQuestionnaire = aiService.createTaskFromQuestionnaire as any;
 
-    mockGetTaskByQuestionnaireId.mockResolvedValue(null);
     mockCreateTaskFromQuestionnaire.mockResolvedValue({
       taskId: "new-task-id",
       status: "PENDING",
@@ -70,7 +64,12 @@ describe("createTask", () => {
 
     const req = new Request("http://localhost/api/tasks", {
       method: "POST",
-      body: JSON.stringify({ questionnaireId: "test-questionnaire-id" }),
+      body: JSON.stringify({
+        questionnaireId: "test-questionnaire-id",
+        answers: [
+          { sectionId: "section-1", questionId: "q-1", answerText: "Yes" },
+        ],
+      }),
     });
 
     const response = await createTask(req);
@@ -118,7 +117,6 @@ describe("getTask", () => {
     const mockGetTaskById = aiService.getTaskById as any;
     mockGetTaskById.mockResolvedValue({
       id: "task-1",
-      questionAnswerId: "qa-1",
       status: "COMPLETED",
       highRiskCount: 2,
       mediumRiskCount: 3,

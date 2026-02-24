@@ -1,4 +1,3 @@
-import { prisma } from "@team-clawctor/db";
 import {
   createTaskFromQuestionnaire,
   getTaskById,
@@ -11,74 +10,48 @@ import {
   recordPaymentAndGenerateReport,
 } from "../services/ai-report-generator";
 
-// POST /api/tasks - Create a task from question answer (manual trigger)
+// POST /api/tasks - Create a task from questionnaire
 export async function createTask(req: Request): Promise<Response> {
   try {
     const body = await req.json();
-    const { questionnaireId, questionAnswerId } = body as {
+    const { questionnaireId, answers } = body as {
       questionnaireId?: string;
-      questionAnswerId?: string;
+      answers?: {
+        sectionId: string;
+        questionId?: string;
+        answerText?: string;
+        answerJson?: unknown;
+      }[];
     };
 
-    if (!questionnaireId && !questionAnswerId) {
+    if (!questionnaireId) {
       return Response.json(
-        { error: "Either questionnaireId or questionAnswerId is required" },
+        { error: "questionnaireId is required" },
         { status: 400 }
       );
     }
 
-    // If questionnaireId provided, check if task already exists
-    if (questionnaireId) {
-      const existingTask = await getTaskByQuestionnaireId(questionnaireId);
-      if (existingTask) {
-        return Response.json(
-          {
-            error: "Task already exists for this questionnaire",
-            taskId: existingTask.id,
-          },
-          { status: 409 }
-        );
-      }
-
-      const result = await createTaskFromQuestionnaire(questionnaireId);
-
+    if (!answers || answers.length === 0) {
       return Response.json(
-        {
-          success: true,
-          data: {
-            taskId: result.taskId,
-            status: result.status,
-            message:
-              "Task created. AI risk assessment is being processed in the background.",
-          },
-        },
-        { status: 201 }
+        { error: "answers is required" },
+        { status: 400 }
       );
     }
 
-    // If questionAnswerId provided, create task directly
-    if (questionAnswerId) {
-      const task = await prisma.task.create({
+    const result = await createTaskFromQuestionnaire(questionnaireId, answers);
+
+    return Response.json(
+      {
+        success: true,
         data: {
-          questionAnswerId,
-          status: "PENDING",
+          taskId: result.taskId,
+          status: result.status,
+          message:
+            "Task created. AI risk assessment is being processed in the background.",
         },
-      });
-
-      return Response.json(
-        {
-          success: true,
-          data: {
-            taskId: task.id,
-            status: task.status,
-            message: "Task created.",
-          },
-        },
-        { status: 201 }
-      );
-    }
-
-    return Response.json({ error: "Invalid request" }, { status: 400 });
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Error creating task:", error);
     const message = error instanceof Error ? error.message : "Internal server error";
@@ -132,7 +105,6 @@ export async function getTask(req: Request, id: string): Promise<Response> {
       success: true,
       data: {
         id: task.id,
-        questionAnswerId: task.questionAnswerId,
         status: task.status,
         highRiskCount: task.highRiskCount,
         mediumRiskCount: task.mediumRiskCount,

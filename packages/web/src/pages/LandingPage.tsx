@@ -11,7 +11,7 @@ import {
 export const LandingPage: FC = () => {
 
   const handleStartAuditClick = () => {
-    console.log('Start audit clicked');
+    document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (

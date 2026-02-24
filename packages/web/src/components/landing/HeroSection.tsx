@@ -44,7 +44,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
                 MK
               </div>
             </div>
-            Trusted by 500+ Engineering Teams
+            Trusted by Engineering Teams
           </div>
         </div>
 

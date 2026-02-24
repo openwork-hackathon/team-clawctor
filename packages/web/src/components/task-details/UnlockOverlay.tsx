@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { useAICCPayment, type PaymentStatus } from '../../hooks/useAICCPayment';
 
@@ -123,6 +123,7 @@ export function UnlockOverlay({
   } = useAICCPayment();
   
   const [paymentError, setPaymentError] = useState<string | null>(null);
+  const unlockTriggered = useRef(false);
 
   const handleUnlock = async () => {
     setPaymentError(null);
@@ -134,12 +135,13 @@ export function UnlockOverlay({
   };
 
   // Handle successful payment
-  if (paymentStatus === 'success' && txHash) {
-    // Auto-trigger unlock success after a short delay
-    setTimeout(() => {
+  useEffect(() => {
+    if (paymentStatus === 'success' && txHash && !unlockTriggered.current) {
+      unlockTriggered.current = true;
+      // 立即调用回调以显示加载页面
       onUnlockSuccess?.(txHash);
-    }, 2000);
-  }
+    }
+  }, [paymentStatus, txHash, onUnlockSuccess]);
 
   const currentBalance = parseFloat(formattedBalance);
   const hasInsufficientBalance = currentBalance < tokenCost;

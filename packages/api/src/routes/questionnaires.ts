@@ -1,279 +1,52 @@
-import { prisma, QuestionnaireStatus, AnswerStatus, Prisma } from '@team-clawctor/db';
+import { prisma, QuestionnaireStatus } from '@team-clawctor/db';
 import { createTaskFromQuestionnaire } from '../services/ai-risk-assessment';
-
-// Types for questionnaire submission request
-interface AnswerInput {
-  sectionId: string; // Reference to QuestionnaireSection.id
-  questionId: string; // Reference to Question.id
-  answerText?: string;
-  answerJson?: Prisma.InputJsonValue;
-  attachments?: AttachmentInput[];
-}
-
-interface AttachmentInput {
-  fileName: string;
-  fileType: string;
-  fileSize?: number;
-  fileUrl: string;
-  description?: string;
-}
-
-interface QuestionnaireSubmissionInput {
-  questionnaireId: string; // ID of the questionnaire template to submit answers for
-  submitterEmail?: string;
-  submitterName?: string;
-  source?: string;
-  answers: AnswerInput[];
-}
-
-// Generate asset hash for verification using Web Crypto API (Bun compatible)
-async function generateAssetHash(data: QuestionnaireSubmissionInput): Promise<string> {
-  const content = JSON.stringify({
-    answers: data.answers,
-    timestamp: Date.now(),
-  });
-  const encoder = new TextEncoder();
-  const dataBuffer = encoder.encode(content);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b: number) => b.toString(16).padStart(2, '0')).join('');
-}
-
-// Validate submission input
-function validateSubmission(data: unknown): { valid: boolean; errors: string[] } {
-  const errors: string[] = [];
-
-  if (!data || typeof data !== 'object') {
-    return { valid: false, errors: ['Invalid request body'] };
-  }
-
-  const input = data as Record<string, unknown>;
-
-  if (!input.questionnaireId || typeof input.questionnaireId !== 'string') {
-    errors.push('questionnaireId is required');
-  }
-
-  if (!input.answers || !Array.isArray(input.answers)) {
-    errors.push('answers is required and must be an array');
-  } else {
-    input.answers.forEach((answer: unknown, index: number) => {
-      if (!answer || typeof answer !== 'object') {
-        errors.push(`answers[${index}] must be an object`);
-        return;
-      }
-
-      const ans = answer as Record<string, unknown>;
-
-      if (!ans.sectionId || typeof ans.sectionId !== 'string') {
-        errors.push(`answers[${index}].sectionId is required`);
-      }
-
-      if (!ans.questionId || typeof ans.questionId !== 'string') {
-        errors.push(`answers[${index}].questionId is required`);
-      }
-    });
-  }
-
-  return { valid: errors.length === 0, errors };
-}
 
 // POST /api/questionnaires - Submit answers to a questionnaire
 export async function submitQuestionnaire(req: Request): Promise<Response> {
   try {
     const body = await req.json();
+    const { questionnaireId, answers } = body as {
+      questionnaireId?: string;
+      answers?: {
+        sectionId: string;
+        questionId?: string;
+        answerText?: string;
+        answerJson?: unknown;
+      }[];
+    };
 
-    // Validate input
-    const validation = validateSubmission(body);
-    if (!validation.valid) {
+    if (!questionnaireId) {
       return Response.json(
-        { error: 'Validation failed', details: validation.errors },
+        { error: "questionnaireId is required" },
         { status: 400 }
       );
     }
 
-    const input = body as QuestionnaireSubmissionInput;
-
-    // Verify the questionnaire template exists
-    const questionnaireTemplate = (await prisma.questionnaireSubmission.findUnique({
-      where: { id: input.questionnaireId },
-      include: {
-        sections: {
-          include: {
-            answers: {
-              include: {
-                question: true,
-              },
-            },
-          },
-        },
-      },
-    })) as any;
-
-    if (!questionnaireTemplate) {
+    if (!answers || answers.length === 0) {
       return Response.json(
-        { error: 'Questionnaire template not found' },
-        { status: 404 }
-      );
-    }
-
-    // Validate that all referenced sections and questions belong to this questionnaire
-    const allSectionIds = [...new Set(input.answers.map(a => a.sectionId))];
-    const templateSectionIds = questionnaireTemplate.sections.map((s: any) => s.id);
-
-    const invalidSections = allSectionIds.filter(id => !templateSectionIds.includes(id));
-    if (invalidSections.length > 0) {
-      return Response.json(
-        {
-          error: 'Invalid section IDs',
-          details: `The following section IDs do not belong to this questionnaire: ${invalidSections.join(', ')}`
-        },
+        { error: "answers is required" },
         { status: 400 }
       );
     }
 
-    // Validate questions
-    const allQuestionIds = input.answers.map(a => a.questionId);
-    const templateQuestionIds = questionnaireTemplate.sections.flatMap((s: any) =>
-      s.answers.map((a: any) => a.questionId)
-    );
-
-    const invalidQuestions = allQuestionIds.filter(id => !templateQuestionIds.includes(id));
-    if (invalidQuestions.length > 0) {
-      return Response.json(
-        {
-          error: 'Invalid question IDs',
-          details: `The following question IDs do not belong to this questionnaire: ${invalidQuestions.join(', ')}`
-        },
-        { status: 400 }
-      );
-    }
-
-    // Update or create answers
-    await Promise.all(
-      input.answers.map(async (answer) => {
-        // Find if answer already exists
-        const existingAnswer = await (prisma as any).questionnaireAnswer.findFirst({
-          where: {
-            sectionId: answer.sectionId,
-            questionId: answer.questionId,
-          },
-        });
-
-        if (existingAnswer) {
-          // Update existing answer
-          return await (prisma as any).questionnaireAnswer.update({
-            where: { id: existingAnswer.id },
-            data: {
-              answerText: answer.answerText,
-              answerJson: answer.answerJson,
-              status: answer.answerText || answer.answerJson
-                ? AnswerStatus.ANSWERED
-                : AnswerStatus.MISSING_INFO,
-              attachments: answer.attachments ? {
-                deleteMany: {}, // Clear existing attachments
-                create: answer.attachments.map((att: AttachmentInput) => ({
-                  fileName: att.fileName,
-                  fileType: att.fileType,
-                  fileSize: att.fileSize,
-                  fileUrl: att.fileUrl,
-                  description: att.description,
-                })),
-              } : undefined,
-            },
-          });
-        } else {
-          // Create new answer
-          return await (prisma as any).questionnaireAnswer.create({
-            data: {
-              sectionId: answer.sectionId,
-              questionId: answer.questionId,
-              answerText: answer.answerText,
-              answerJson: answer.answerJson,
-              status: answer.answerText || answer.answerJson
-                ? AnswerStatus.ANSWERED
-                : AnswerStatus.MISSING_INFO,
-              attachments: answer.attachments ? {
-                create: answer.attachments.map((att: AttachmentInput) => ({
-                  fileName: att.fileName,
-                  fileType: att.fileType,
-                  fileSize: att.fileSize,
-                  fileUrl: att.fileUrl,
-                  description: att.description,
-                })),
-              } : undefined,
-            },
-          });
-        }
-      })
-    );
-
-    // Update submission metadata
-    const assetHash = await generateAssetHash(input);
-    const submission = await prisma.questionnaireSubmission.update({
-      where: { id: input.questionnaireId },
-      data: {
-        submitterEmail: input.submitterEmail,
-        submitterName: input.submitterName,
-        source: input.source || 'web_portal',
-        assetHash,
-        sessionVerified: true,
-        status: QuestionnaireStatus.SUBMITTED,
-        submittedAt: new Date(),
-      },
-      include: {
-        sections: {
-          include: {
-            answers: {
-              include: {
-                question: true,
-                attachments: true,
-              },
-            },
-          },
-        },
-      },
-    } as any);
-
-    const sectionsCount = (submission as any).sections.length;
-    const totalQuestions = (submission as any).sections.reduce(
-      (acc: number, sec: any) => acc + sec.answers.filter((a: any) => a.answerText || a.answerJson).length,
-      0
-    );
-
-    // Automatically create a task with AI risk assessment
-    let taskInfo: { taskId: string; status: string } | null = null;
-    try {
-      const taskResult = await createTaskFromQuestionnaire(submission.id);
-      taskInfo = {
-        taskId: taskResult.taskId,
-        status: taskResult.status,
-      };
-    } catch (taskError) {
-      console.error('Error creating task for questionnaire:', taskError);
-      // Don't fail the questionnaire submission if task creation fails
-    }
+    const result = await createTaskFromQuestionnaire(questionnaireId, answers);
 
     return Response.json(
       {
         success: true,
         data: {
-          id: submission.id,
-          assetHash: submission.assetHash,
-          status: submission.status,
-          submittedAt: submission.submittedAt,
-          sectionsCount,
-          totalQuestions,
-          task: taskInfo,
+          taskId: result.taskId,
+          status: result.status,
+          message:
+            "Task created. AI risk assessment is being processed in the background.",
         },
       },
       { status: 201 }
     );
   } catch (error) {
-    console.error('Error submitting questionnaire:', error);
-    return Response.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error("Error creating task:", error);
+    const message = error instanceof Error ? error.message : "Internal server error";
+    return Response.json({ error: message }, { status: 500 });
   }
 }
 

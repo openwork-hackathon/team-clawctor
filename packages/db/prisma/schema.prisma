@@ -39,9 +39,6 @@ enum ReportStatus {
 model Task {
   id String @id @default(cuid())
 
-  // Reference to questionnaire answer
-  questionAnswerId String @unique
-
   // AI Risk Assessment Results
   highRiskCount   Int @default(0)
   mediumRiskCount Int @default(0)
@@ -73,9 +70,8 @@ model Task {
   processedAt DateTime? // When AI assessment completed
 
   // Relations
-  questionAnswer QuestionnaireAnswer @relation(fields: [questionAnswerId], references: [id])
+  questionnaireAnswers QuestionnaireAnswer[]
 
-  @@index([questionAnswerId])
   @@index([status])
   @@index([reportStatus])
   @@index([createdAt])
@@ -203,6 +199,9 @@ model QuestionnaireAnswer {
   // New field - Reference to Question template
   questionId String? // Will be required after migration
 
+  // Reference to Task
+  taskId String?
+
   // Answer content
   answerText String? // The text answer provided
   answerJson Json? // For structured answers (multiple choice, etc.)
@@ -220,12 +219,13 @@ model QuestionnaireAnswer {
   // Relations
   section     QuestionnaireSection      @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   question    Question?                 @relation(fields: [questionId], references: [id])
+  task        Task?                     @relation(fields: [taskId], references: [id])
   attachments QuestionnaireAttachment[]
-  tasks       Task[] // A question answer can have multiple tasks
 
   @@unique([sectionId, questionCode])
   @@index([sectionId])
   @@index([questionId])
+  @@index([taskId])
   @@index([status])
 }
 
