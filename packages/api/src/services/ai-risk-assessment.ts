@@ -1,5 +1,5 @@
 import { generateText } from "ai";
-import { google } from "@ai-sdk/google";
+import { createAmazonBedrock } from "@ai-sdk/amazon-bedrock";
 import { prisma, TaskStatus } from "@team-clawctor/db";
 
 // Types for questionnaire data
@@ -81,8 +81,9 @@ Respond in the following JSON format only:
 ${formattedData}`;
 
   try {
-    const { text } = await generateText({
-      model: google("gemini-2.5-flash"),
+    const bedrock = createAmazonBedrock();
+  const { text } = await generateText({
+      model: bedrock("global.anthropic.claude-sonnet-4-5-20250929-v1:0"),
       system: systemPrompt,
       prompt: userPrompt,
     });

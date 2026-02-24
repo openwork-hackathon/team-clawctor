@@ -8,7 +8,7 @@
     "start": "bun src/index.ts"
   },
   "dependencies": {
-    "@ai-sdk/google": "^3.0.23",
+    "@ai-sdk/amazon-bedrock": "^4.0.59",
     "@team-clawctor/db": "workspace:*",
     "ai": "^6.0.78"
   }

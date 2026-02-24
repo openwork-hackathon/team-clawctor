@@ -1,5 +1,5 @@
 import { generateText } from "ai";
-import { google } from "@ai-sdk/google";
+import { createAmazonBedrock } from "@ai-sdk/amazon-bedrock";
 import { prisma } from "@team-clawctor/db";
 import { generateReportHTML } from "./report-html-template";
 
@@ -166,8 +166,9 @@ ${assessmentData?.risks ? `Identified Risks:\n${JSON.stringify(assessmentData.ri
 
 Please generate a comprehensive security report with detailed findings, scores, and remediation recommendations.`;
 
+  const bedrock = createAmazonBedrock();
   const { text } = await generateText({
-    model: google("gemini-2.5-flash"),
+    model: bedrock("global.anthropic.claude-sonnet-4-5-20250929-v1:0"),
     system: systemPrompt,
     prompt: userPrompt,
   });
